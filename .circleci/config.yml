@@ -7,11 +7,8 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:8-jdk
-
-    working_directory: ~/WorkflowStreamer/WorkflowStreamer
     
     steps:
       - checkout
-      - run: ls
-      - run: mvn dependency:go-offline
-      - run: mvn integration-test
+      - run: cd WorkflowStreamer && mvn dependency:go-offline
+      - run: cd WorkflowStreamer && mvn integration-test

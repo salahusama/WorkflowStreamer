@@ -12,5 +12,6 @@ jobs:
     
     steps:
       - checkout
+      - run: ls
       - run: mvn dependency:go-offline
       - run: mvn integration-test

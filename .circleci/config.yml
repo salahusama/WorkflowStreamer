@@ -12,6 +12,5 @@ jobs:
     
     steps:
       - checkout
-        path: ~/WorkflowStreamer
       - run: mvn dependency:go-offline
       - run: mvn integration-test

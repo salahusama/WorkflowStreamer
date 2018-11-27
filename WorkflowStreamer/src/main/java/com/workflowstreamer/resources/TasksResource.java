@@ -27,10 +27,7 @@ public class TasksResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskById(@PathParam("id") int id) {
-        ImmutableTask task = tasksDao.getTaskById(id);
-        return Response
-                .accepted(task)
-                .build();
+    public ImmutableTask getTaskById(@PathParam("id") int id) {
+        return tasksDao.getTaskById(id);
     }
 }

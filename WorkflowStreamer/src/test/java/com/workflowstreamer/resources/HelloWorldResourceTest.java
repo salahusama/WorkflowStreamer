@@ -8,9 +8,13 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class HelloWorldResourceTest {
-
     private static final String NAME = "Salah";
-    private final HelloWorldResource helloWorldResource = new HelloWorldResource();
+    private HelloWorldResource helloWorldResource;
+
+    @Before
+    public void init() {
+        helloWorldResource = new HelloWorldResource();
+    }
 
     @Test
     public void itSaysHelloWithName() throws Exception {

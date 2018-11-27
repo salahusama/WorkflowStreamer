@@ -1,3 +1,13 @@
+database:
+  driverClass: com.mysql.cj.jdbc.Driver
+  user: app-user
+  password: App123!work
+  url: jdbc:mysql://localhost:3306/workflowstreamer?autoReconnect=true&useSSL=false
+  maxWaitForConnection: 1s
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  minSize: 8
+  maxSize: 32
+
 server:
   type: simple
   applicationContextPath: /

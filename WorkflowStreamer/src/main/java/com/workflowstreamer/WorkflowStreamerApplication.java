@@ -8,12 +8,7 @@ import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import java.util.EnumSet;
 
 public class WorkflowStreamerApplication extends Application<WorkflowStreamerConfiguration> {
     public static void main(final String[] args) throws Exception {

@@ -1,12 +1,17 @@
 package com.workflowstreamer.resources;
 
 import com.workflowstreamer.core.ImmutableLoginData;
+import com.workflowstreamer.core.ImmutableNewUser;
+import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.core.ImmutableUser;
 import com.workflowstreamer.dao.UsersDAO;
+import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Timestamp;
 
 @Path("/users")
 public class UsersResource {
@@ -17,7 +22,7 @@ public class UsersResource {
     }
 
     @POST
-    @Path("/login")
+    @Path("/user/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(ImmutableLoginData loginData) {
@@ -27,6 +32,22 @@ public class UsersResource {
             response = Response.ok(user);
         } else {
             response = Response.status(Response.Status.NOT_FOUND);
+        }
+        return response.build();
+    }
+
+    @PUT
+    @Path("/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addUser(ImmutableNewUser newUser) {
+        Response.ResponseBuilder response;
+        try {
+            int userId = usersDao.insertUser(newUser.getUsername(), newUser.getPassword());
+            ImmutableUser insertedUser = usersDao.getUserById(userId);
+            response = Response.ok(insertedUser);
+        } catch (UnableToExecuteStatementException e) {
+            response = Response.status(Response.Status.FORBIDDEN);
         }
         return response.build();
     }

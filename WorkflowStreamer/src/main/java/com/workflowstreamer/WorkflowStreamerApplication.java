@@ -2,7 +2,6 @@ package com.workflowstreamer;
 
 import com.workflowstreamer.dao.TasksDAO;
 import com.workflowstreamer.dao.UsersDAO;
-import com.workflowstreamer.resources.HelloWorldResource;
 import com.workflowstreamer.resources.TasksResource;
 import com.workflowstreamer.resources.UsersResource;
 import io.dropwizard.Application;
@@ -35,7 +34,6 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
 
         // I could pass a manager here instead of a DAO
-        environment.jersey().register(new HelloWorldResource());
         environment.jersey().register(new TasksResource(tasksDao));
         environment.jersey().register(new UsersResource(usersDao));
     }

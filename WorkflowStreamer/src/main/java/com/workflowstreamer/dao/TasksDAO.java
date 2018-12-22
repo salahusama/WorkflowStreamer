@@ -3,6 +3,7 @@ package com.workflowstreamer.dao;
 import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.dao.mapper.TaskMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
@@ -19,6 +20,7 @@ public interface TasksDAO {
     @SqlQuery("select task_id, title, description, creator_id, created_at from tasks where task_id = :id")
     ImmutableTask getTaskById(@Bind("id") int id);
 
+    @GetGeneratedKeys
     @SqlUpdate("INSERT INTO TASKS (title, description, creator_id, created_at) VALUES (:title, :desc, :user, :createdAt)")
-    void insertTask(@Bind("title") String title, @Bind("desc") String description, @Bind("user")int userId, @Bind("createdAt") Timestamp createdAt);
+    int insertTask(@Bind("title") String title, @Bind("desc") String description, @Bind("user")int userId, @Bind("createdAt") Timestamp createdAt);
 }

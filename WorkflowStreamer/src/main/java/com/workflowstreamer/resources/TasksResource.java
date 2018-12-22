@@ -6,6 +6,7 @@ import com.workflowstreamer.dao.TasksDAO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -34,8 +35,11 @@ public class TasksResource {
     @PUT
     @Path("/task")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void insertTask(ImmutableNewTask newTask) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response insertTask(ImmutableNewTask newTask) {
         // TODO: get userId from auth
-        tasksDao.insertTask(newTask.getTitle(), newTask.getDescription(), newTask.getCreatorId(), Timestamp.valueOf(LocalDateTime.now()));
+        int generatedId = tasksDao.insertTask(newTask.getTitle(), newTask.getDescription(), newTask.getCreatorId(), Timestamp.valueOf(LocalDateTime.now()));
+        ImmutableTask insertedTask = tasksDao.getTaskById(generatedId);
+        return Response.ok(insertedTask).build();
     }
 }

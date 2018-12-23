@@ -1,5 +1,6 @@
 create table users (
 	user_id INT auto_increment,
+	email longtext,
     username varchar(20) unique,
     password longtext,
     primary key (user_id)

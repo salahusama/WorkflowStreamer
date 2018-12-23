@@ -6,6 +6,7 @@ import org.immutables.value.Value.Immutable;
 @Immutable
 @JsonDeserialize
 public interface NewUser {
+    String getEmail();
     String getUsername();
     String getPassword();
 }

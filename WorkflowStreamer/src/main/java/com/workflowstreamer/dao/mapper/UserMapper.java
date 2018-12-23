@@ -12,6 +12,7 @@ public class UserMapper implements ResultSetMapper<ImmutableUser> {
     public ImmutableUser map(int index, ResultSet r, StatementContext ctx) throws SQLException {
         return ImmutableUser.builder()
                 .userId(r.getInt("user_id"))
+                .email(r.getString("email"))
                 .username(r.getString("username"))
                 .password(r.getString("password"))
                 .build();

@@ -18,9 +18,12 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TasksResourceTest {
     private static final int TASK_ID = 123;
+    private static final int PROJECT_ID = 12;
     private static final ImmutableTask TASK = ImmutableTask.builder()
             .taskId(TASK_ID)
+            .projectId(PROJECT_ID)
             .creatorId(5)
+            .stage("A stage")
             .title("A title")
             .description("This is a fake task")
             .createdAt(Timestamp.from(Instant.now()))
@@ -29,7 +32,9 @@ public class TasksResourceTest {
             TASK,
             ImmutableTask.builder()
                     .taskId(125)
+                    .projectId(PROJECT_ID)
                     .creatorId(5)
+                    .stage("Another stage")
                     .title("Another title")
                     .description("This is another fake task")
                     .createdAt(Timestamp.from(Instant.now()))
@@ -49,12 +54,12 @@ public class TasksResourceTest {
     }
 
     @Test
-    public void itReturnsSetOfTasksCorrectly() throws Exception {
+    public void itReturnsSetOfTasksCorrectly() {
         assertThat(tasksResource.getTasks()).isEqualTo(TASKS);
     }
 
     @Test
-    public void itSaysHelloToStranger() throws Exception {
+    public void itSaysHelloToStranger() {
         assertThat(tasksResource.getTaskById(TASK_ID)).isEqualTo(TASK);
     }
 }

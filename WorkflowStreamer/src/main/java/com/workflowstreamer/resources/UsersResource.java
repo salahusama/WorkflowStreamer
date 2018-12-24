@@ -3,12 +3,14 @@ package com.workflowstreamer.resources;
 import com.workflowstreamer.core.ImmutableLoginData;
 import com.workflowstreamer.core.ImmutableNewUser;
 import com.workflowstreamer.core.ImmutableUser;
+import com.workflowstreamer.core.ImmutableUserStage;
 import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Set;
 
 @Path("/users")
 public class UsersResource {
@@ -23,6 +25,13 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public ImmutableUser getUserById(@PathParam("id") int id) {
         return usersDao.getUserById(id);
+    }
+
+    @GET
+    @Path("/user/{id}/stages")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<ImmutableUserStage> getUserStagesForUser(@PathParam("id") int id) {
+        return usersDao.getUserStagesByUserId(id);
     }
 
     @POST

@@ -5,10 +5,7 @@ import org.immutables.value.Value.Immutable;
 
 @Immutable
 @JsonDeserialize
-public interface NewTask {
-    int getProjectId();
-    int getCreatorId();
+public interface UserStage {
+    int getUserId();
     String getStage();
-    String getTitle();
-    String getDescription();
 }

@@ -13,14 +13,31 @@ import java.util.Set;
 
 public interface TasksDAO {
     @Mapper(TaskMapper.class)
-    @SqlQuery("select task_id, title, description, creator_id, created_at from tasks")
+    @SqlQuery("select task_id, project_id, creator_id, stage, title, description, created_at from tasks")
     Set<ImmutableTask> getAllTasks();
 
     @Mapper(TaskMapper.class)
-    @SqlQuery("select task_id, title, description, creator_id, created_at from tasks where task_id = :id")
+    @SqlQuery("select task_id, project_id, creator_id, stage, title, description, created_at from tasks where creator_id = :userId")
+    Set<ImmutableTask> getTasksByUser(@Bind("userId") int userId);
+
+    @Mapper(TaskMapper.class)
+    @SqlQuery("select task_id, project_id, creator_id, stage, title, description, created_at from tasks where project_id = :projectId")
+    Set<ImmutableTask> getTasksByProjectId(@Bind("projectId") int projectId);
+
+    @Mapper(TaskMapper.class)
+    @SqlQuery("select task_id, project_id, creator_id, stage, title, description, created_at from tasks where task_id = :id")
     ImmutableTask getTaskById(@Bind("id") int id);
 
     @GetGeneratedKeys
-    @SqlUpdate("INSERT INTO TASKS (title, description, creator_id, created_at) VALUES (:title, :desc, :user, :createdAt)")
-    int insertTask(@Bind("title") String title, @Bind("desc") String description, @Bind("user")int userId, @Bind("createdAt") Timestamp createdAt);
+    @SqlUpdate("INSERT INTO TASKS (project_id, creator_id, stage, title, description, created_at)" +
+               "VALUES (:projectId, :creatorId, :stage, :title, :desc, :createdAt)")
+    int insertTask(
+            @Bind("projectId") int projectId,
+            @Bind("creatorId") int creatorId,
+            @Bind("stage") String stage,
+            @Bind("title") String title,
+            @Bind("desc") String description,
+            @Bind("user") int userId,
+            @Bind("createdAt") Timestamp createdAt
+    );
 }

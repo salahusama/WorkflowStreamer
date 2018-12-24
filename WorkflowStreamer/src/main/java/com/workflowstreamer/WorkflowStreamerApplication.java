@@ -1,7 +1,9 @@
 package com.workflowstreamer;
 
+import com.workflowstreamer.dao.ProjectsDAO;
 import com.workflowstreamer.dao.TasksDAO;
 import com.workflowstreamer.dao.UsersDAO;
+import com.workflowstreamer.resources.ProjectsResource;
 import com.workflowstreamer.resources.TasksResource;
 import com.workflowstreamer.resources.UsersResource;
 import io.dropwizard.Application;
@@ -32,9 +34,11 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
 
         final UsersDAO usersDao = jdbi.onDemand(UsersDAO.class);
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
+        final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
 
         // I could pass a manager here instead of a DAO
         environment.jersey().register(new TasksResource(tasksDao));
         environment.jersey().register(new UsersResource(usersDao));
+        environment.jersey().register(new ProjectsResource(projectsDAO));
     }
 }

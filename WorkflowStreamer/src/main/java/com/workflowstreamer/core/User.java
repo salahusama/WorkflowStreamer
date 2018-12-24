@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 @Immutable
 public interface User {
     int getUserId();
+    String getEmail();
     String getUsername();
     String getPassword();
 }

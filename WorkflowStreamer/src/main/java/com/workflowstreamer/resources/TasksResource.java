@@ -26,6 +26,20 @@ public class TasksResource {
     }
 
     @GET
+    @Path("/project/{projectId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<ImmutableTask> getTasksByProjectId(@PathParam("projectId") int projectId) {
+        return tasksDao.getTasksByProjectId(projectId);
+    }
+
+    @GET
+    @Path("/user/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<ImmutableTask> getTasksForUserId(@PathParam("userId") int userId) {
+        return tasksDao.getTasksByUser(userId);
+    }
+
+    @GET
     @Path("/task/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ImmutableTask getTaskById(@PathParam("id") int id) {
@@ -38,7 +52,15 @@ public class TasksResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response insertTask(ImmutableNewTask newTask) {
         // TODO: get userId from auth
-        int generatedId = tasksDao.insertTask(newTask.getTitle(), newTask.getDescription(), newTask.getCreatorId(), Timestamp.valueOf(LocalDateTime.now()));
+        int generatedId = tasksDao.insertTask(
+                newTask.getProjectId(),
+                newTask.getCreatorId(),
+                newTask.getStage(),
+                newTask.getTitle(),
+                newTask.getDescription(),
+                newTask.getCreatorId(),
+                Timestamp.valueOf(LocalDateTime.now())
+        );
         ImmutableTask insertedTask = tasksDao.getTaskById(generatedId);
         return Response.ok(insertedTask).build();
     }

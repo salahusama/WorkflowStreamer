@@ -1,15 +1,14 @@
 package com.workflowstreamer.resources;
 
-import com.workflowstreamer.core.*;
+import com.workflowstreamer.core.ImmutableLoginData;
+import com.workflowstreamer.core.ImmutableNewUser;
+import com.workflowstreamer.core.ImmutableUser;
 import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Timestamp;
-import java.util.Optional;
 
 @Path("/users")
 public class UsersResource {

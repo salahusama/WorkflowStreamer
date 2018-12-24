@@ -1,6 +1,5 @@
 package com.workflowstreamer.dao.mapper;
 
-import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.core.ImmutableUser;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;

@@ -1,7 +1,7 @@
 package com.workflowstreamer.resources;
 
 import com.workflowstreamer.core.ImmutableProject;
-import com.workflowstreamer.dao.ProjectsDAO;
+import com.workflowstreamer.manager.ProjectsManager;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,15 +12,15 @@ import java.util.Set;
 
 @Path("/projects")
 public class ProjectsResource {
-    private ProjectsDAO projectsDAO;
+    private ProjectsManager projectsManager;
 
-    public ProjectsResource(ProjectsDAO projectsDAO) {
-        this.projectsDAO = projectsDAO;
+    public ProjectsResource(ProjectsManager projectsManager) {
+        this.projectsManager = projectsManager;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Set<ImmutableProject> getProjectsByUser(@QueryParam("userId") int userId) {
-        return projectsDAO.getProjectsByCreator(userId);
+        return projectsManager.getUserCreatedProjects(userId);
     }
 }

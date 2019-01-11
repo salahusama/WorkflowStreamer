@@ -2,7 +2,7 @@ package com.workflowstreamer.resources;
 
 import com.google.common.collect.ImmutableSet;
 import com.workflowstreamer.core.ImmutableTask;
-import com.workflowstreamer.dao.TasksDAO;
+import com.workflowstreamer.manager.TasksManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,24 +42,18 @@ public class TasksResourceTest {
     );
 
     @Mock
-    private TasksDAO tasksDAO;
+    private TasksManager tasksManager;
     private TasksResource tasksResource;
 
     @Before
     public void init() {
-        when(tasksDAO.getAllTasks()).thenReturn(TASKS);
-        when(tasksDAO.getTaskById(TASK_ID)).thenReturn(TASK);
+        when(tasksManager.getTaskById(TASK_ID)).thenReturn(TASK);
 
-        tasksResource = new TasksResource(tasksDAO);
+        tasksResource = new TasksResource(tasksManager);
     }
 
     @Test
-    public void itReturnsSetOfTasksCorrectly() {
-        assertThat(tasksResource.getTasks()).isEqualTo(TASKS);
-    }
-
-    @Test
-    public void itSaysHelloToStranger() {
+    public void itGetsTasksById() {
         assertThat(tasksResource.getTaskById(TASK_ID)).isEqualTo(TASK);
     }
 }

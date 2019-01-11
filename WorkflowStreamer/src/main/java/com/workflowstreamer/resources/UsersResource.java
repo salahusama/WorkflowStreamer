@@ -4,8 +4,7 @@ import com.workflowstreamer.core.ImmutableLoginData;
 import com.workflowstreamer.core.ImmutableNewUser;
 import com.workflowstreamer.core.ImmutableUser;
 import com.workflowstreamer.core.ImmutableUserStage;
-import com.workflowstreamer.dao.UsersDAO;
-import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
+import com.workflowstreamer.manager.UsersManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -14,24 +13,24 @@ import java.util.Set;
 
 @Path("/users")
 public class UsersResource {
-    private UsersDAO usersDao;
+    private UsersManager usersManager;
 
-    public UsersResource(UsersDAO usersDao) {
-        this.usersDao = usersDao;
+    public UsersResource(UsersManager usersManager) {
+        this.usersManager = usersManager;
     }
 
     @GET
     @Path("/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ImmutableUser getUserById(@PathParam("id") int id) {
-        return usersDao.getUserById(id);
+        return usersManager.getUserById(id);
     }
 
     @GET
     @Path("/user/{id}/stages")
     @Produces(MediaType.APPLICATION_JSON)
     public Set<ImmutableUserStage> getUserStagesForUser(@PathParam("id") int id) {
-        return usersDao.getUserStagesByUserId(id);
+        return usersManager.getUserStagesByUserId(id);
     }
 
     @POST
@@ -39,14 +38,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(ImmutableLoginData loginData) {
-        Response.ResponseBuilder response;
-        ImmutableUser user = usersDao.getUserByUsername(loginData.getUsername());
-        if (user.getPassword().equals(loginData.getPassword())) {
-            response = Response.ok(user);
-        } else {
-            response = Response.status(Response.Status.NOT_FOUND);
-        }
-        return response.build();
+        return usersManager.login(loginData);
     }
 
     @PUT
@@ -54,14 +46,6 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addUser(ImmutableNewUser newUser) {
-        Response.ResponseBuilder response;
-        try {
-            int userId = usersDao.insertUser(newUser.getEmail(), newUser.getUsername(), newUser.getPassword());
-            ImmutableUser insertedUser = usersDao.getUserById(userId);
-            response = Response.ok(insertedUser);
-        } catch (UnableToExecuteStatementException e) {
-            response = Response.status(Response.Status.FORBIDDEN);
-        }
-        return response.build();
+        return usersManager.addNewUser(newUser);
     }
 }

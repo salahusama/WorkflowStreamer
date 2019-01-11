@@ -3,6 +3,9 @@ package com.workflowstreamer;
 import com.workflowstreamer.dao.ProjectsDAO;
 import com.workflowstreamer.dao.TasksDAO;
 import com.workflowstreamer.dao.UsersDAO;
+import com.workflowstreamer.manager.ProjectsManager;
+import com.workflowstreamer.manager.TasksManager;
+import com.workflowstreamer.manager.UsersManager;
 import com.workflowstreamer.resources.ProjectsResource;
 import com.workflowstreamer.resources.TasksResource;
 import com.workflowstreamer.resources.UsersResource;
@@ -36,9 +39,13 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
         final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
 
+        final UsersManager usersManager = new UsersManager(usersDao);
+        final TasksManager tasksManager = new TasksManager(tasksDao);
+        final ProjectsManager projectsManager = new ProjectsManager(projectsDAO);
+
         // I could pass a manager here instead of a DAO
-        environment.jersey().register(new TasksResource(tasksDao));
-        environment.jersey().register(new UsersResource(usersDao));
-        environment.jersey().register(new ProjectsResource(projectsDAO));
+        environment.jersey().register(new TasksResource(tasksManager));
+        environment.jersey().register(new UsersResource(usersManager));
+        environment.jersey().register(new ProjectsResource(projectsManager));
     }
 }

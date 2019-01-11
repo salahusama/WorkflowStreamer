@@ -7,12 +7,12 @@ import java.sql.Timestamp;
 
 @Immutable
 @JsonDeserialize
-public interface Task {
-    int getTaskId();
-    int getProjectId();
-    int getCreatorId();
-    String getStage();
-    String getTitle();
-    String getDescription();
-    Timestamp getCreatedAt();
+public abstract class Task {
+    abstract int getTaskId();
+    abstract int getProjectId();
+    abstract int getCreatorId();
+    abstract String getStage();
+    abstract String getTitle();
+    abstract String getDescription();
+    abstract Timestamp getCreatedAt();
 }

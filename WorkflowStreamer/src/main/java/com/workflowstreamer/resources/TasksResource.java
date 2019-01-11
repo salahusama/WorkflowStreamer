@@ -1,5 +1,6 @@
 package com.workflowstreamer.resources;
 
+import com.workflowstreamer.core.ImmutableEditableTask;
 import com.workflowstreamer.core.ImmutableNewTask;
 import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.manager.TasksManager;
@@ -45,5 +46,13 @@ public class TasksResource {
     public Response insertTask(ImmutableNewTask newTask) {
         // TODO: get userId from auth
         return tasksManager.insertTask(newTask);
+    }
+
+    @POST
+    @Path("/task")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateTask(ImmutableEditableTask task) {
+        return tasksManager.updateTask(task);
     }
 }

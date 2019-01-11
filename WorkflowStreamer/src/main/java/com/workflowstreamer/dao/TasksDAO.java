@@ -13,10 +13,6 @@ import java.util.Set;
 
 public interface TasksDAO {
     @Mapper(TaskMapper.class)
-    @SqlQuery("select task_id, project_id, creator_id, stage, title, description, created_at from tasks")
-    Set<ImmutableTask> getAllTasks();
-
-    @Mapper(TaskMapper.class)
     @SqlQuery("select task_id, project_id, creator_id, stage, title, description, created_at from tasks where creator_id = :userId")
     Set<ImmutableTask> getTasksByUser(@Bind("userId") int userId);
 
@@ -39,5 +35,16 @@ public interface TasksDAO {
             @Bind("desc") String description,
             @Bind("user") int userId,
             @Bind("createdAt") Timestamp createdAt
+    );
+
+    @SqlUpdate("UPDATE TASKS " +
+               "SET project_id = :projectId, stage = :stage, title = :title, description = :desc " +
+               "WHERE task_id = :taskId")
+    int updateTask(
+            @Bind("taskId") int taskId,
+            @Bind("projectId") int projectId,
+            @Bind("stage") String stage,
+            @Bind("title") String title,
+            @Bind("desc") String description
     );
 }

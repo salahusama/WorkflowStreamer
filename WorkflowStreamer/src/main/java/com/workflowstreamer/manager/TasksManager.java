@@ -59,12 +59,12 @@ public class TasksManager {
                     newInfo.getDescription().orElse(currentInfo.getDescription())
             );
 
-            if (rowsAffected == 1) {
-                ImmutableTask updatedTask = tasksDao.getTaskById(taskId);
-                response = Response.ok(updatedTask);
-            } else {
+            if (rowsAffected != 1) {
                 response = Response.notModified();
             }
+
+            ImmutableTask updatedTask = tasksDao.getTaskById(taskId);
+            response = Response.ok(updatedTask);
         } catch (UnableToExecuteStatementException e) {
             response = Response.notModified();
         }

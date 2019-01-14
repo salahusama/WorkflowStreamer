@@ -39,7 +39,8 @@ public class TasksManager {
                 newTask.getDescription(),
                 newTask.getCreatorId(),
                 Timestamp.valueOf(LocalDateTime.now()),
-                newTask.getPriority().orElse(null)
+                newTask.getPriority().orElse(null),
+                newTask.getEstimatedWork().orElse(null)
         );
         ImmutableTask insertedTask = tasksDao.getTaskById(generatedId);
         return Response.ok(insertedTask).build();
@@ -58,7 +59,8 @@ public class TasksManager {
                     newInfo.getStage().orElse(currentInfo.getStage()),
                     newInfo.getTitle().orElse(currentInfo.getTitle()),
                     newInfo.getDescription().orElse(currentInfo.getDescription()),
-                    newInfo.getPriority().orElse(currentInfo.getPriority().orElse(null))
+                    newInfo.getPriority().orElse(currentInfo.getPriority().orElse(null)),
+                    newInfo.getEstimatedWork().orElse(currentInfo.getEstimatedWork().orElse(null))
             );
 
             if (rowsAffected != 1) {

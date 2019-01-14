@@ -17,7 +17,8 @@ public class TaskMapper implements ResultSetMapper<ImmutableTask> {
                 .stage(r.getString("stage"))
                 .title(r.getString("title"))
                 .description(r.getString("description"))
-                .createdAt(r.getTimestamp("created_at"));
+                .createdAt(r.getTimestamp("created_at"))
+                .estimatedWork(r.getInt("est_work"));
 
         String priority = r.getString("priority");
 

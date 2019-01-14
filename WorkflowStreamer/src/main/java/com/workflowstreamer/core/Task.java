@@ -18,4 +18,5 @@ public interface Task {
     String getDescription();
     Timestamp getCreatedAt();
     Optional<Priority> getPriority();
+    Optional<Integer> getEstimatedWork();
 }

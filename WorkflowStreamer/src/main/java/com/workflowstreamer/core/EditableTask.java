@@ -15,4 +15,5 @@ public interface EditableTask {
     Optional<String> getTitle();
     Optional<String> getDescription();
     Optional<Priority> getPriority();
+    Optional<Integer> getEstimatedWork();
 }

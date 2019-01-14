@@ -15,4 +15,5 @@ public interface NewTask {
     String getTitle();
     String getDescription();
     Optional<Priority> getPriority();
+    Optional<Integer> getEstimatedWork();
 }

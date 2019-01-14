@@ -26,8 +26,8 @@ public interface TasksDAO {
     ImmutableTask getTaskById(@Bind("id") int id);
 
     @GetGeneratedKeys
-    @SqlUpdate("INSERT INTO TASKS (project_id, creator_id, stage, title, description, created_at, priority)" +
-               "VALUES (:projectId, :creatorId, :stage, :title, :desc, :createdAt, :priority)")
+    @SqlUpdate("INSERT INTO TASKS (project_id, creator_id, stage, title, description, created_at, priority, est_work)" +
+               "VALUES (:projectId, :creatorId, :stage, :title, :desc, :createdAt, :priority, :est_work)")
     int insertTask(
             @Bind("projectId") int projectId,
             @Bind("creatorId") int creatorId,
@@ -36,11 +36,12 @@ public interface TasksDAO {
             @Bind("desc") String description,
             @Bind("user") int userId,
             @Bind("createdAt") Timestamp createdAt,
-            @Bind("priority") Priority priority
+            @Bind("priority") Priority priority,
+            @Bind("est_work") Integer estimatedWork
     );
 
     @SqlUpdate("UPDATE TASKS " +
-               "SET project_id = :projectId, stage = :stage, title = :title, description = :desc, priority = :priority " +
+               "SET project_id = :projectId, stage = :stage, title = :title, description = :desc, priority = :priority, est_work = :est_work " +
                "WHERE task_id = :taskId")
     int updateTask(
             @Bind("taskId") int taskId,
@@ -48,6 +49,7 @@ public interface TasksDAO {
             @Bind("stage") String stage,
             @Bind("title") String title,
             @Bind("desc") String description,
-            @Bind("priority") Priority priority
+            @Bind("priority") Priority priority,
+            @Bind("est_work") Integer estimatedWork
     );
 }

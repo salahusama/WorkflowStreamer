@@ -28,6 +28,8 @@ CREATE TABLE tasks (
 	stage		VARCHAR(50),
 	title		LONGTEXT,
 	description	LONGTEXT,
+	priority    VARCHAR(10),
+	est_work    INT,
 	created_at	DATETIME,
 	PRIMARY KEY (task_id),
 	FOREIGN KEY (creator_id) REFERENCES users (user_id),

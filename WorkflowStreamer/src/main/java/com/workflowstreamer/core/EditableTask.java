@@ -1,6 +1,7 @@
 package com.workflowstreamer.core;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.workflowstreamer.core.enums.Priority;
 import org.immutables.value.Value.Immutable;
 
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface EditableTask {
     Optional<String> getStage();
     Optional<String> getTitle();
     Optional<String> getDescription();
+    Optional<Priority> getPriority();
 }

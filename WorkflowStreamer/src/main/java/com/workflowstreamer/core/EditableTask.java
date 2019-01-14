@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.workflowstreamer.core.enums.Priority;
 import org.immutables.value.Value.Immutable;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Immutable
@@ -16,4 +17,5 @@ public interface EditableTask {
     Optional<String> getDescription();
     Optional<Priority> getPriority();
     Optional<Integer> getEstimatedWork();
+    Optional<Date> getDueDate();
 }

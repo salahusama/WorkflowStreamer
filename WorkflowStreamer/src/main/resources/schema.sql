@@ -30,6 +30,7 @@ CREATE TABLE tasks (
 	description	LONGTEXT,
 	priority    VARCHAR(10),
 	est_work    INT,
+	due_date    DATE,
 	created_at	DATETIME,
 	PRIMARY KEY (task_id),
 	FOREIGN KEY (creator_id) REFERENCES users (user_id),

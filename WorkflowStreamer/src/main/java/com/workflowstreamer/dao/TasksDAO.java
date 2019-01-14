@@ -10,6 +10,7 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 public interface TasksDAO {
@@ -37,7 +38,8 @@ public interface TasksDAO {
             @Bind("user") int userId,
             @Bind("createdAt") Timestamp createdAt,
             @Bind("priority") Priority priority,
-            @Bind("est_work") Integer estimatedWork
+            @Bind("est_work") Integer estimatedWork,
+            @Bind("due_date") Date dueDate
     );
 
     @SqlUpdate("UPDATE TASKS " +
@@ -50,6 +52,7 @@ public interface TasksDAO {
             @Bind("title") String title,
             @Bind("desc") String description,
             @Bind("priority") Priority priority,
-            @Bind("est_work") Integer estimatedWork
+            @Bind("est_work") Integer estimatedWork,
+            @Bind("due_date") Date dueDate
     );
 }

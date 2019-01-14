@@ -38,7 +38,10 @@ public class TasksManager {
                 newTask.getTitle(),
                 newTask.getDescription(),
                 newTask.getCreatorId(),
-                Timestamp.valueOf(LocalDateTime.now())
+                Timestamp.valueOf(LocalDateTime.now()),
+                newTask.getPriority().orElse(null),
+                newTask.getEstimatedWork().orElse(null),
+                newTask.getDueDate().orElse(null)
         );
         ImmutableTask insertedTask = tasksDao.getTaskById(generatedId);
         return Response.ok(insertedTask).build();
@@ -56,11 +59,14 @@ public class TasksManager {
                     // TODO: Stage is a foreign key - FE or BE need to ensure its valid
                     newInfo.getStage().orElse(currentInfo.getStage()),
                     newInfo.getTitle().orElse(currentInfo.getTitle()),
-                    newInfo.getDescription().orElse(currentInfo.getDescription())
+                    newInfo.getDescription().orElse(currentInfo.getDescription()),
+                    newInfo.getPriority().orElse(currentInfo.getPriority().orElse(null)),
+                    newInfo.getEstimatedWork().orElse(currentInfo.getEstimatedWork().orElse(null)),
+                    newInfo.getDueDate().orElse(currentInfo.getDueDate().orElse(null))
             );
 
             if (rowsAffected != 1) {
-                response = Response.notModified();
+                throw new UnableToExecuteStatementException("No rows affected");
             }
 
             ImmutableTask updatedTask = tasksDao.getTaskById(taskId);

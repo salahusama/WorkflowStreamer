@@ -1,15 +1,17 @@
 package com.workflowstreamer.dao.mapper;
 
 import com.workflowstreamer.core.ImmutableTask;
+import com.workflowstreamer.core.enums.Priority;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class TaskMapper implements ResultSetMapper<ImmutableTask> {
     public ImmutableTask map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-        return ImmutableTask.builder()
+        ImmutableTask.Builder builder = ImmutableTask.builder()
                 .taskId(r.getInt("task_id"))
                 .projectId(r.getInt("project_id"))
                 .creatorId(r.getInt("creator_id"))
@@ -17,6 +19,19 @@ public class TaskMapper implements ResultSetMapper<ImmutableTask> {
                 .title(r.getString("title"))
                 .description(r.getString("description"))
                 .createdAt(r.getTimestamp("created_at"))
-                .build();
+                .estimatedWork(r.getInt("est_work"));
+
+        String priority = r.getString("priority");
+        Date dueDate = r.getDate("due_date");
+
+        if (priority != null) {
+            builder.priority(Priority.valueOf(priority));
+        }
+
+        if (dueDate != null) {
+            builder.dueDate(dueDate);
+        }
+
+        return builder.build();
     }
 }

@@ -6,6 +6,7 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ProjectMapper implements ResultSetMapper<ImmutableProject> {
     public ImmutableProject map(int index, ResultSet r, StatementContext ctx) throws SQLException {
@@ -13,7 +14,7 @@ public class ProjectMapper implements ResultSetMapper<ImmutableProject> {
                 .projectId(r.getInt("project_id"))
                 .creatorId(r.getInt("creator_id"))
                 .name(r.getString("name"))
-                .description(r.getString("description"))
+                .description(Optional.ofNullable(r.getString("description")))
                 .build();
     }
 }

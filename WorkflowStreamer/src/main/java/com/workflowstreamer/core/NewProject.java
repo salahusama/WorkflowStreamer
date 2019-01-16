@@ -5,6 +5,4 @@ import org.immutables.value.Value.Immutable;
 
 @Immutable
 @JsonDeserialize
-public interface Project extends BasicProject {
-    int getProjectId();
-}
+public interface NewProject extends BasicProject {}

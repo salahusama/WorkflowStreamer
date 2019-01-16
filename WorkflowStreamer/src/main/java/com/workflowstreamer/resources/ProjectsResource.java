@@ -1,13 +1,12 @@
 package com.workflowstreamer.resources;
 
+import com.workflowstreamer.core.ImmutableNewProject;
 import com.workflowstreamer.core.ImmutableProject;
 import com.workflowstreamer.manager.ProjectsManager;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Path("/projects")
@@ -22,5 +21,14 @@ public class ProjectsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Set<ImmutableProject> getProjectsByUser(@QueryParam("userId") int userId) {
         return projectsManager.getUserCreatedProjects(userId);
+    }
+
+    @PUT
+    @Path("/project")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response insertTask(ImmutableNewProject newProject) {
+        // TODO: get userId from auth
+        return projectsManager.insertProject(newProject);
     }
 }

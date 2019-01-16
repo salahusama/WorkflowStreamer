@@ -7,7 +7,7 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.Optional;
 
 public class TaskMapper implements ResultSetMapper<ImmutableTask> {
     public ImmutableTask map(int index, ResultSet r, StatementContext ctx) throws SQLException {
@@ -19,17 +19,13 @@ public class TaskMapper implements ResultSetMapper<ImmutableTask> {
                 .title(r.getString("title"))
                 .description(r.getString("description"))
                 .createdAt(r.getTimestamp("created_at"))
-                .estimatedWork(r.getInt("est_work"));
+                .estimatedWork(r.getInt("est_work"))
+                .dueDate(Optional.ofNullable(r.getDate("due_date")));
 
         String priority = r.getString("priority");
-        Date dueDate = r.getDate("due_date");
 
         if (priority != null) {
             builder.priority(Priority.valueOf(priority));
-        }
-
-        if (dueDate != null) {
-            builder.dueDate(dueDate);
         }
 
         return builder.build();

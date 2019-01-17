@@ -29,11 +29,12 @@ public class UsersManager {
         Response.ResponseBuilder response;
         ImmutableUser user = usersDao.getUserByUsername(loginData.getUsername());
 
-        if (user.getPassword().equals(loginData.getPassword())) {
+        if (user != null && user.getPassword().equals(loginData.getPassword())) {
             response = Response.ok(user);
         } else {
             response = Response.status(Response.Status.NOT_FOUND);
         }
+
         return response.build();
     }
 

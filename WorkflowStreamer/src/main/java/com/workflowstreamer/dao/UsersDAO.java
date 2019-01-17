@@ -28,4 +28,7 @@ public interface UsersDAO {
     @Mapper(UserStageMapper.class)
     @SqlQuery("SELECT user_id, stage FROM user_stages WHERE user_id = :userId")
     Set<ImmutableUserStage> getUserStagesByUserId(@Bind("userId") int userId);
+
+    @SqlUpdate("INSERT INTO user_stages (user_id, stage) VALUES (:userId, :stage)")
+    void insertUserStage(@Bind("userId") int userId, @Bind("stage") String stage);
 }

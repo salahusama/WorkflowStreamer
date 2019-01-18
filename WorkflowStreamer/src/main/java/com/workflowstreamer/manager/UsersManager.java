@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.util.Set;
 
 public class UsersManager {
-    private static final ImmutableSet<String> DEFAUL_STAGES = ImmutableSet.of("Back Log", "In Progress", "Done");
+    private static final ImmutableSet<String> DEFAULT_STAGES = ImmutableSet.of("Back Log", "In Progress", "Done");
     private final UsersDAO usersDao;
 
     public UsersManager(UsersDAO usersDao) {
@@ -56,7 +56,7 @@ public class UsersManager {
 
     private void addDefaultStages(int userId) {
         try {
-            DEFAUL_STAGES.forEach(stage -> usersDao.insertUserStage(userId, stage));
+            DEFAULT_STAGES.forEach(stage -> usersDao.insertUserStage(userId, stage));
         } catch (UnableToExecuteStatementException e) {
             e.printStackTrace();
         }

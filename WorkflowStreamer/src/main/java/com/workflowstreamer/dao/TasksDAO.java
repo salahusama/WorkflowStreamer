@@ -43,7 +43,7 @@ public interface TasksDAO {
     );
 
     @SqlUpdate("UPDATE TASKS " +
-               "SET project_id = :projectId, stage = :stage, title = :title, description = :desc, priority = :priority, est_work = :est_work " +
+               "SET project_id = :projectId, stage = :stage, title = :title, description = :desc, priority = :priority, est_work = :est_work, due_date = :due_date " +
                "WHERE task_id = :taskId")
     int updateTask(
             @Bind("taskId") int taskId,
@@ -53,6 +53,6 @@ public interface TasksDAO {
             @Bind("desc") String description,
             @Bind("priority") Priority priority,
             @Bind("est_work") Integer estimatedWork,
-            @Bind("due_date") Date dueDate
+            @Bind("due_date") Date dueDate // YYYY-MM-DD
     );
 }

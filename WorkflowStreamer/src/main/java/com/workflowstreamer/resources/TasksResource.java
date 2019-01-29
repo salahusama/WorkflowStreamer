@@ -19,6 +19,13 @@ public class TasksResource {
     }
 
     @GET
+    @Path("/task/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ImmutableTask getTaskById(@PathParam("id") int id) {
+        return tasksManager.getTaskById(id);
+    }
+
+    @GET
     @Path("/project/{projectId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Set<ImmutableTask> getTasksByProjectId(@PathParam("projectId") int projectId) {
@@ -30,13 +37,6 @@ public class TasksResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Set<ImmutableTask> getTasksForUserId(@PathParam("userId") int userId) {
         return tasksManager.getTasksCreatedByUser(userId);
-    }
-
-    @GET
-    @Path("/task/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ImmutableTask getTaskById(@PathParam("id") int id) {
-        return tasksManager.getTaskById(id);
     }
 
     @PUT

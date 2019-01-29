@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TasksManager {
     private final TasksDAO tasksDao;
@@ -23,11 +24,15 @@ public class TasksManager {
     }
 
     public Set<ImmutableTask> getTasksCreatedByUser(int userId) {
-        return tasksDao.getTasksByUser(userId);
+        Set<ImmutableTask> userTasks = tasksDao.getTasksByUser(userId);
+        return userTasks.stream()
+                .map(task -> task.withIsRecommended(checkRecommendation(task)))
+                .collect(Collectors.toSet());
     }
 
     public ImmutableTask getTaskById(int taskId) {
-        return tasksDao.getTaskById(taskId);
+        ImmutableTask task = tasksDao.getTaskById(taskId);
+        return task.withIsRecommended(checkRecommendation(task));
     }
 
     public Response insertTask(ImmutableNewTask newTask) {
@@ -43,7 +48,7 @@ public class TasksManager {
                 newTask.getEstimatedWork().orElse(null),
                 newTask.getDueDate().orElse(null)
         );
-        ImmutableTask insertedTask = tasksDao.getTaskById(generatedId);
+        ImmutableTask insertedTask = getTaskById(generatedId);
         return Response.ok(insertedTask).build();
     }
 
@@ -69,12 +74,16 @@ public class TasksManager {
                 throw new UnableToExecuteStatementException("No rows affected");
             }
 
-            ImmutableTask updatedTask = tasksDao.getTaskById(taskId);
+            ImmutableTask updatedTask = getTaskById(taskId);
             response = Response.ok(updatedTask);
         } catch (UnableToExecuteStatementException e) {
             response = Response.notModified();
         }
 
         return response.build();
+    }
+
+    private boolean checkRecommendation(ImmutableTask task) {
+        return task.getTitle().contains("API");
     }
 }

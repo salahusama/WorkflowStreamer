@@ -21,4 +21,5 @@ public interface Task {
     Optional<Priority> getPriority();
     Optional<Integer> getEstimatedWork();
     Optional<Date> getDueDate();
+    Optional<Boolean> getIsRecommended();
 }

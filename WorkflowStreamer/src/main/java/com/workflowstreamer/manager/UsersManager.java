@@ -1,10 +1,7 @@
 package com.workflowstreamer.manager;
 
 import com.google.common.collect.ImmutableList;
-import com.workflowstreamer.core.ImmutableLoginData;
-import com.workflowstreamer.core.ImmutableNewUser;
-import com.workflowstreamer.core.ImmutableUser;
-import com.workflowstreamer.core.ImmutableUserStage;
+import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
@@ -13,10 +10,15 @@ import java.util.Set;
 
 public class UsersManager {
     private static final ImmutableList<String> DEFAULT_STAGES = ImmutableList.of("Back Log", "In Progress", "Done");
-    private final UsersDAO usersDao;
+    private static final String DEFAULT_PROJECT_NAME = "Default";
+    private static final String DEFAULT_PROJECT_DESCRIPTION = "This is the default project for you.";
 
-    public UsersManager(UsersDAO usersDao) {
+    private final UsersDAO usersDao;
+    private final ProjectsManager projectsManager;
+
+    public UsersManager(UsersDAO usersDao, ProjectsManager projectsManager) {
         this.usersDao = usersDao;
+        this.projectsManager = projectsManager;
     }
 
     public ImmutableUser getUserById(int id) {
@@ -48,6 +50,12 @@ public class UsersManager {
             ImmutableUser insertedUser = usersDao.getUserById(userId);
             response = Response.ok(insertedUser);
             addDefaultStages(insertedUser.getUserId());
+            projectsManager.insertProject(ImmutableNewProject.builder()
+                    .creatorId(userId)
+                    .name(DEFAULT_PROJECT_NAME)
+                    .description(DEFAULT_PROJECT_DESCRIPTION)
+                    .build()
+            );
         } catch (UnableToExecuteStatementException e) {
             response = Response.status(Response.Status.FORBIDDEN);
         }

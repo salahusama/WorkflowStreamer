@@ -4,10 +4,7 @@ import com.workflowstreamer.core.ImmutableUser;
 import com.workflowstreamer.core.ImmutableUserStage;
 import com.workflowstreamer.dao.mapper.UserMapper;
 import com.workflowstreamer.dao.mapper.UserStageMapper;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
 import java.util.Set;
@@ -26,9 +23,12 @@ public interface UsersDAO {
     int insertUser(@Bind("email") String email, @Bind("username") String username, @Bind("password") String password);
 
     @Mapper(UserStageMapper.class)
-    @SqlQuery("SELECT user_id, stage FROM user_stages WHERE user_id = :userId")
+    @SqlQuery("SELECT * FROM user_stages WHERE user_id = :userId")
     Set<ImmutableUserStage> getUserStagesByUserId(@Bind("userId") int userId);
 
-    @SqlUpdate("INSERT INTO user_stages (user_id, stage) VALUES (:userId, :stage)")
-    void insertUserStage(@Bind("userId") int userId, @Bind("stage") String stage);
+    @SqlUpdate("INSERT INTO user_stages (user_id, stage, view_order) VALUES (:userId, :stage, :viewOrder)")
+    void insertUserStage(@Bind("userId") int userId, @Bind("stage") String stage, @Bind(":viewOrder") int order);
+
+    @SqlUpdate("INSERT INTO user_stages (user_id, stage, view_order) VALUES (:userId, :stage, :viewOrder)")
+    void insertUserStage(@BindBean ImmutableUserStage userStage);
 }

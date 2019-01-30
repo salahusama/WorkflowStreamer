@@ -48,4 +48,12 @@ public class UsersResource {
     public Response addUser(ImmutableNewUser newUser) {
         return usersManager.addNewUser(newUser);
     }
+
+    @PUT
+    @Path("/user/stage")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addUserStage(ImmutableUserStage stage) {
+        return usersManager.addNewUserStage(stage);
+    }
 }

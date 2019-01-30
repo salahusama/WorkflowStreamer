@@ -8,4 +8,5 @@ import org.immutables.value.Value.Immutable;
 public interface UserStage {
     int getUserId();
     String getStage();
+    int getViewOrder();
 }

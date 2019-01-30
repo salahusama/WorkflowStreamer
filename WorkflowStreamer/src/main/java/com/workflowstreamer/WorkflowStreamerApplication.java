@@ -39,9 +39,9 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
         final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
 
-        final UsersManager usersManager = new UsersManager(usersDao);
         final TasksManager tasksManager = new TasksManager(tasksDao);
         final ProjectsManager projectsManager = new ProjectsManager(projectsDAO);
+        final UsersManager usersManager = new UsersManager(usersDao, projectsManager);
 
         // I could pass a manager here instead of a DAO
         environment.jersey().register(new TasksResource(tasksManager));

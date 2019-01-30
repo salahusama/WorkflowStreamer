@@ -1,6 +1,6 @@
 package com.workflowstreamer.manager;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.workflowstreamer.core.ImmutableLoginData;
 import com.workflowstreamer.core.ImmutableNewUser;
 import com.workflowstreamer.core.ImmutableUser;
@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.util.Set;
 
 public class UsersManager {
-    private static final ImmutableSet<String> DEFAULT_STAGES = ImmutableSet.of("Back Log", "In Progress", "Done");
+    private static final ImmutableList<String> DEFAULT_STAGES = ImmutableList.of("Back Log", "In Progress", "Done");
     private final UsersDAO usersDao;
 
     public UsersManager(UsersDAO usersDao) {
@@ -54,9 +54,24 @@ public class UsersManager {
         return response.build();
     }
 
+    public Response addNewUserStage(ImmutableUserStage stage) {
+        Response.ResponseBuilder response;
+
+        try {
+            usersDao.insertUserStage(stage);
+            response = Response.ok();
+        } catch (UnableToExecuteStatementException e) {
+            response = Response.status(Response.Status.CONFLICT);
+        }
+        return response.build();
+    }
+
     private void addDefaultStages(int userId) {
         try {
-            DEFAULT_STAGES.forEach(stage -> usersDao.insertUserStage(userId, stage));
+            int viewOrder = 1;
+            for (String stage : DEFAULT_STAGES) {
+                usersDao.insertUserStage(userId, stage, viewOrder++);
+            }
         } catch (UnableToExecuteStatementException e) {
             e.printStackTrace();
         }

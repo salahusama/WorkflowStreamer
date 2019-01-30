@@ -12,6 +12,7 @@ public class UserStageMapper implements ResultSetMapper<ImmutableUserStage> {
         return ImmutableUserStage.builder()
                 .userId(r.getInt("user_id"))
                 .stage(r.getString("stage"))
+                .viewOrder(r.getInt("view_order"))
                 .build();
     }
 }

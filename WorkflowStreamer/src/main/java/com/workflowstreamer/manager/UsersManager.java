@@ -1,10 +1,7 @@
 package com.workflowstreamer.manager;
 
 import com.google.common.collect.ImmutableList;
-import com.workflowstreamer.core.ImmutableLoginData;
-import com.workflowstreamer.core.ImmutableNewUser;
-import com.workflowstreamer.core.ImmutableUser;
-import com.workflowstreamer.core.ImmutableUserStage;
+import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 

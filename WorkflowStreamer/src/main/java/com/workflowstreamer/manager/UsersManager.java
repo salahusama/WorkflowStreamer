@@ -70,7 +70,12 @@ public class UsersManager {
         try {
             int viewOrder = 1;
             for (String stage : DEFAULT_STAGES) {
-                usersDao.insertUserStage(userId, stage, viewOrder++);
+                usersDao.insertUserStage(ImmutableUserStage.builder()
+                        .userId(userId)
+                        .stage(stage)
+                        .viewOrder(viewOrder++)
+                        .build()
+                );
             }
         } catch (UnableToExecuteStatementException e) {
             e.printStackTrace();

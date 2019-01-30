@@ -27,8 +27,5 @@ public interface UsersDAO {
     Set<ImmutableUserStage> getUserStagesByUserId(@Bind("userId") int userId);
 
     @SqlUpdate("INSERT INTO user_stages (user_id, stage, view_order) VALUES (:userId, :stage, :viewOrder)")
-    void insertUserStage(@Bind("userId") int userId, @Bind("stage") String stage, @Bind(":viewOrder") int order);
-
-    @SqlUpdate("INSERT INTO user_stages (user_id, stage, view_order) VALUES (:userId, :stage, :viewOrder)")
     void insertUserStage(@BindBean ImmutableUserStage userStage);
 }

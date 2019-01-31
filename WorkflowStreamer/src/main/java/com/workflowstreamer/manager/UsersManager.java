@@ -2,7 +2,7 @@ package com.workflowstreamer.manager;
 
 import com.google.common.collect.ImmutableList;
 import com.workflowstreamer.core.*;
-import com.workflowstreamer.dao.UsersDAO;
+import com.workflowstreamer.data.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.core.Response;

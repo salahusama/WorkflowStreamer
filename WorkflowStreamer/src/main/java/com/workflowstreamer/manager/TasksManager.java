@@ -3,7 +3,7 @@ package com.workflowstreamer.manager;
 import com.workflowstreamer.core.ImmutableEditableTask;
 import com.workflowstreamer.core.ImmutableNewTask;
 import com.workflowstreamer.core.ImmutableTask;
-import com.workflowstreamer.dao.TasksDAO;
+import com.workflowstreamer.data.dao.TasksDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.core.Response;

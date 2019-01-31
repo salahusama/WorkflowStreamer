@@ -2,8 +2,7 @@ package com.workflowstreamer.manager;
 
 import com.workflowstreamer.core.ImmutableNewProject;
 import com.workflowstreamer.core.ImmutableProject;
-import com.workflowstreamer.core.ImmutableTask;
-import com.workflowstreamer.dao.ProjectsDAO;
+import com.workflowstreamer.data.dao.ProjectsDAO;
 
 import javax.ws.rs.core.Response;
 import java.util.Set;

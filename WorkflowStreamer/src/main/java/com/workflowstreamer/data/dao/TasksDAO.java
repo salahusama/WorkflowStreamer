@@ -1,8 +1,8 @@
-package com.workflowstreamer.dao;
+package com.workflowstreamer.data.dao;
 
 import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.core.enums.Priority;
-import com.workflowstreamer.dao.mapper.TaskMapper;
+import com.workflowstreamer.data.dao.mapper.TaskMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;

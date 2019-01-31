@@ -1,4 +1,4 @@
-package com.workflowstreamer.dao.mapper;
+package com.workflowstreamer.data.dao.mapper;
 
 import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.core.enums.Priority;

@@ -1,9 +1,9 @@
-package com.workflowstreamer.dao;
+package com.workflowstreamer.data.dao;
 
 import com.workflowstreamer.core.ImmutableUser;
 import com.workflowstreamer.core.ImmutableUserStage;
-import com.workflowstreamer.dao.mapper.UserMapper;
-import com.workflowstreamer.dao.mapper.UserStageMapper;
+import com.workflowstreamer.data.dao.mapper.UserMapper;
+import com.workflowstreamer.data.dao.mapper.UserStageMapper;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 

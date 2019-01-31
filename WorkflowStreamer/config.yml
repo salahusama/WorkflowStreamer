@@ -20,3 +20,9 @@ logging:
   level: INFO
   loggers:
     com.workflowstreamer: DEBUG
+
+mongoHost: localhost
+mongoPort: 27017
+mongoDB: test
+mongoUser: app
+mongoPassword: 1234

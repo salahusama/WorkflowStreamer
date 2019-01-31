@@ -1,7 +1,7 @@
-package com.workflowstreamer.dao;
+package com.workflowstreamer.data.dao;
 
 import com.workflowstreamer.core.ImmutableProject;
-import com.workflowstreamer.dao.mapper.ProjectMapper;
+import com.workflowstreamer.data.dao.mapper.ProjectMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;

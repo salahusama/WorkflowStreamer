@@ -7,13 +7,17 @@ import com.workflowstreamer.data.mongo.AnalyticsEventMapper;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 
 public class AnalyticsManager {
-    private final JacksonDBCollection<MutableAnalyticsEvent, String> collection;
+    private final JacksonDBCollection<MutableAnalyticsEvent, String> eventsCollection;
 
-    public AnalyticsManager(JacksonDBCollection<MutableAnalyticsEvent, String> collection) {
-        this.collection = collection;
+    public AnalyticsManager(JacksonDBCollection<MutableAnalyticsEvent, String> eventsCollection) {
+        this.eventsCollection = eventsCollection;
     }
 
     public ImmutableList<ImmutableAnalyticsEvent> getAnalyticsEvents() {
-        return AnalyticsEventMapper.mapToList(collection.find());
+        return AnalyticsEventMapper.mapToList(eventsCollection.find());
+    }
+
+    public void fireEvent(ImmutableAnalyticsEvent analyticsEvent) {
+        eventsCollection.insert(new MutableAnalyticsEvent(analyticsEvent));
     }
 }

@@ -1,7 +1,9 @@
 package com.workflowstreamer.dao;
 
+import com.workflowstreamer.core.ImmutableNewTask;
 import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.core.enums.Priority;
+import com.workflowstreamer.dao.binder.NewTaskBinder;
 import com.workflowstreamer.dao.mapper.TaskMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
@@ -41,6 +43,11 @@ public interface TasksDAO {
             @Bind("est_work") Integer estimatedWork,
             @Bind("due_date") Date dueDate
     );
+
+    @GetGeneratedKeys
+    @SqlUpdate("INSERT INTO TASKS (project_id, creator_id, stage, title, description, created_at, priority, est_work)" +
+               "VALUES (:projectId, :creatorId, :stage, :title, :description, :createdAt, :priority, :estimatedWork)")
+    int insertTask(@NewTaskBinder ImmutableNewTask newTask);
 
     @SqlUpdate("UPDATE TASKS " +
                "SET project_id = :projectId, stage = :stage, title = :title, description = :desc, priority = :priority, est_work = :est_work, due_date = :due_date " +

@@ -14,7 +14,7 @@ public interface NewTask {
     int getCreatorId();
     String getStage();
     String getTitle();
-    String getDescription();
+    Optional<String> getDescription();
     Optional<Priority> getPriority();
     Optional<Integer> getEstimatedWork();
     Optional<Date> getDueDate();

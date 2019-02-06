@@ -8,8 +8,6 @@ import com.workflowstreamer.dao.TasksDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.core.Response;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,18 +37,7 @@ public class TasksManager {
     }
 
     public Response insertTask(ImmutableNewTask newTask) {
-        int generatedId = tasksDao.insertTask(
-                newTask.getProjectId(),
-                newTask.getCreatorId(),
-                newTask.getStage(),
-                newTask.getTitle(),
-                newTask.getDescription(),
-                newTask.getCreatorId(),
-                Timestamp.valueOf(LocalDateTime.now()),
-                newTask.getPriority().orElse(null),
-                newTask.getEstimatedWork().orElse(null),
-                newTask.getDueDate().orElse(null)
-        );
+        int generatedId = tasksDao.insertTask(newTask);
         ImmutableTask insertedTask = getTaskById(generatedId);
         analyticsClient.trackEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedTask, AnalyticsClient.Events.TaskInteraction.Types.CREATED_TASK).build());
 
@@ -69,14 +56,14 @@ public class TasksManager {
                     // TODO: Stage is a foreign key - FE or BE need to ensure its valid
                     newInfo.getStage().orElse(currentInfo.getStage()),
                     newInfo.getTitle().orElse(currentInfo.getTitle()),
-                    newInfo.getDescription().orElse(currentInfo.getDescription()),
+                    newInfo.getDescription().orElse(currentInfo.getDescription().orElse(null)),
                     newInfo.getPriority().orElse(currentInfo.getPriority().orElse(null)),
                     newInfo.getEstimatedWork().orElse(currentInfo.getEstimatedWork().orElse(null)),
                     newInfo.getDueDate().orElse(currentInfo.getDueDate().orElse(null))
             );
 
             if (rowsAffected != 1) {
-                throw new UnableToExecuteStatementException("No rows affected");
+                throw new UnableToExecuteStatementException(new Exception("No rows affected"), null);
             }
 
             ImmutableTask updatedTask = getTaskById(taskId);

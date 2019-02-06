@@ -1,5 +1,8 @@
 package com.workflowstreamer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.dao.ProjectsDAO;
 import com.workflowstreamer.dao.TasksDAO;
 import com.workflowstreamer.dao.UsersDAO;
@@ -13,6 +16,7 @@ import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import okhttp3.OkHttpClient;
 import org.skife.jdbi.v2.DBI;
 
 public class WorkflowStreamerApplication extends Application<WorkflowStreamerConfiguration> {
@@ -39,7 +43,12 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
         final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
 
-        final TasksManager tasksManager = new TasksManager(tasksDao);
+        final ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new Jdk8Module());
+        final OkHttpClient httpClient = new OkHttpClient();
+        final AnalyticsClient analyticsManager = new AnalyticsClient(httpClient, objectMapper);
+
+        final TasksManager tasksManager = new TasksManager(tasksDao, analyticsManager);
         final ProjectsManager projectsManager = new ProjectsManager(projectsDAO);
         final UsersManager usersManager = new UsersManager(usersDao, projectsManager);
 

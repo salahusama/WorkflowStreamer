@@ -1,8 +1,11 @@
 package com.workflowstreamer.manager;
 
+import com.workflowstreamer.WorkflowStreamerConstants;
+import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.ImmutableEditableTask;
 import com.workflowstreamer.core.ImmutableNewTask;
 import com.workflowstreamer.core.ImmutableTask;
+import com.workflowstreamer.core.ImmutableAnalyticsEvent;
 import com.workflowstreamer.dao.TasksDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
@@ -14,9 +17,11 @@ import java.util.stream.Collectors;
 
 public class TasksManager {
     private final TasksDAO tasksDao;
+    private final AnalyticsClient analyticsClient;
 
-    public TasksManager(TasksDAO tasksDao) {
+    public TasksManager(TasksDAO tasksDao, AnalyticsClient analyticsClient) {
         this.tasksDao = tasksDao;
+        this.analyticsClient = analyticsClient;
     }
 
     public Set<ImmutableTask> getTasksByProjectId(int projectId) {
@@ -49,6 +54,17 @@ public class TasksManager {
                 newTask.getDueDate().orElse(null)
         );
         ImmutableTask insertedTask = getTaskById(generatedId);
+
+        analyticsClient.trackEvent(ImmutableAnalyticsEvent.builder()
+                .eventName(WorkflowStreamerConstants.Events.TASK_INTERACTION)
+                .eventType(WorkflowStreamerConstants.Types.CREATED_TASK)
+                .time(Timestamp.valueOf(LocalDateTime.now()))
+                .taskId(generatedId)
+                .userId(newTask.getCreatorId())
+                .projectId(newTask.getProjectId())
+                .build()
+        );
+
         return Response.ok(insertedTask).build();
     }
 

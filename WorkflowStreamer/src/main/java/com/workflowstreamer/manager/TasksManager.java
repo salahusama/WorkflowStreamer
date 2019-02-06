@@ -1,5 +1,6 @@
 package com.workflowstreamer.manager;
 
+import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.ImmutableEditableTask;
 import com.workflowstreamer.core.ImmutableNewTask;
 import com.workflowstreamer.core.ImmutableTask;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 
 public class TasksManager {
     private final TasksDAO tasksDao;
+    private final AnalyticsClient analyticsClient;
 
-    public TasksManager(TasksDAO tasksDao) {
+    public TasksManager(TasksDAO tasksDao, AnalyticsClient analyticsClient) {
         this.tasksDao = tasksDao;
+        this.analyticsClient = analyticsClient;
     }
 
     public Set<ImmutableTask> getTasksByProjectId(int projectId) {
@@ -49,6 +52,8 @@ public class TasksManager {
                 newTask.getDueDate().orElse(null)
         );
         ImmutableTask insertedTask = getTaskById(generatedId);
+        analyticsClient.trackEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedTask, AnalyticsClient.Events.TaskInteraction.Types.CREATED_TASK).build());
+
         return Response.ok(insertedTask).build();
     }
 

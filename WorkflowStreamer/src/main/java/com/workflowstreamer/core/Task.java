@@ -16,7 +16,7 @@ public interface Task {
     int getCreatorId();
     String getStage();
     String getTitle();
-    String getDescription();
+    Optional<String> getDescription();
     Timestamp getCreatedAt();
     Optional<Priority> getPriority();
     Optional<Integer> getEstimatedWork();

@@ -1,6 +1,7 @@
 package com.workflowstreamer.manager;
 
 import com.google.common.collect.ImmutableList;
+import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
@@ -14,10 +15,12 @@ public class UsersManager {
     private static final String DEFAULT_PROJECT_DESCRIPTION = "This is the default project for you.";
 
     private final UsersDAO usersDao;
+    private final AnalyticsClient analyticsClient;
     private final ProjectsManager projectsManager;
 
-    public UsersManager(UsersDAO usersDao, ProjectsManager projectsManager) {
+    public UsersManager(UsersDAO usersDao, AnalyticsClient analyticsClient, ProjectsManager projectsManager) {
         this.usersDao = usersDao;
+        this.analyticsClient = analyticsClient;
         this.projectsManager = projectsManager;
     }
 

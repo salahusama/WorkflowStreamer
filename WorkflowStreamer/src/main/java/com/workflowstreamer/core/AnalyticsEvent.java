@@ -2,6 +2,7 @@ package com.workflowstreamer.core;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.ImmutableMap;
 import org.immutables.value.Value.Immutable;
 
 import java.util.Date;
@@ -22,4 +23,6 @@ public interface AnalyticsEvent {
     Optional<Integer> getUserId();
 
     Optional<Integer> getTaskId();
+
+    Optional<ImmutableMap<String, String>> getExtraParams();
 }

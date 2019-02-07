@@ -2,7 +2,9 @@ package com.workflowstreamer.clients;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.workflowstreamer.core.ImmutableAnalyticsEvent;
+import com.workflowstreamer.core.ImmutableProject;
 import com.workflowstreamer.core.ImmutableTask;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -20,7 +22,14 @@ public class AnalyticsClient {
         interface TaskInteraction {
             String NAME = "task-interaction";
             interface Types {
-                String CREATED_TASK = "created-task";
+                String CREATED = "created";
+                String UPDATED = "updated";
+            }
+        }
+        interface ProjectInteraction {
+            String NAME = "project-interaction";
+            interface Types {
+                String CREATED = "created";
             }
         }
     }
@@ -33,7 +42,7 @@ public class AnalyticsClient {
         this.objectMapper = objectMapper;
     }
 
-    public void trackEvent(ImmutableAnalyticsEvent event) {
+    public void fireEvent(ImmutableAnalyticsEvent event) {
         String eventAsJSONString;
         try {
             eventAsJSONString = objectMapper.writeValueAsString(event);
@@ -63,5 +72,49 @@ public class AnalyticsClient {
                 .taskId(task.getTaskId())
                 .userId(task.getCreatorId())
                 .projectId(task.getProjectId());
+    }
+
+    public static ImmutableAnalyticsEvent.Builder AnalyticsEventBuilderFrom(ImmutableTask updatedTask, ImmutableTask oldTask) {
+        // extraParams contain details of what changed
+        ImmutableMap.Builder extraParamsBuilder = ImmutableMap.<String, String>builder();
+        // Only add fields that changed
+        if (!oldTask.getStage().equals(updatedTask.getStage())) {
+            extraParamsBuilder
+                    .put("old-stage", oldTask.getStage())
+                    .put("new-stage", updatedTask.getStage());
+        }
+        if (!oldTask.getPriority().equals(updatedTask.getPriority())) {
+            extraParamsBuilder
+                    .put("old-priority", oldTask.getPriority().isPresent() ? oldTask.getPriority().get().toString() : "")
+                    .put("new-priority", updatedTask.getPriority().isPresent() ? updatedTask.getPriority().get().toString() : "");
+        }
+        if (!oldTask.getDueDate().equals(updatedTask.getDueDate())) {
+            extraParamsBuilder
+                    .put("old-dueDate", oldTask.getDueDate().isPresent() ? oldTask.getDueDate().get().toString() : "")
+                    .put("new-dueDate", updatedTask.getDueDate().isPresent() ? updatedTask.getDueDate().get().toString() : "");
+        }
+        if (!oldTask.getEstimatedWork().equals(updatedTask.getEstimatedWork())) {
+            extraParamsBuilder
+                    .put("old-estimatedWork", oldTask.getEstimatedWork().isPresent() ? oldTask.getEstimatedWork().get().toString() : "")
+                    .put("new-estimatedWork", updatedTask.getEstimatedWork().isPresent() ? updatedTask.getEstimatedWork().get().toString() : "");
+        }
+
+        return ImmutableAnalyticsEvent.builder()
+                .eventName(Events.TaskInteraction.NAME)
+                .eventType(Events.TaskInteraction.Types.UPDATED)
+                .time(Timestamp.valueOf(LocalDateTime.now()))
+                .taskId(updatedTask.getTaskId())
+                .userId(updatedTask.getCreatorId())
+                .projectId(updatedTask.getProjectId())
+                .extraParams(extraParamsBuilder.build());
+    }
+
+    public static ImmutableAnalyticsEvent.Builder AnalyticsEventBuilderFrom(ImmutableProject project, String type) {
+        return ImmutableAnalyticsEvent.builder()
+                .eventName(Events.ProjectInteraction.NAME)
+                .eventType(type)
+                .time(Timestamp.valueOf(LocalDateTime.now()))
+                .userId(project.getCreatorId())
+                .projectId(project.getProjectId());
     }
 }

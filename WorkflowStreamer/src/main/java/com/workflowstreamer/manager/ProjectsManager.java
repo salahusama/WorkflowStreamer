@@ -1,8 +1,8 @@
 package com.workflowstreamer.manager;
 
+import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.ImmutableNewProject;
 import com.workflowstreamer.core.ImmutableProject;
-import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.dao.ProjectsDAO;
 
 import javax.ws.rs.core.Response;
@@ -10,9 +10,11 @@ import java.util.Set;
 
 public class ProjectsManager {
     private final ProjectsDAO projectsDao;
+    private final AnalyticsClient analyticsClient;
 
-    public ProjectsManager(ProjectsDAO projectsDao) {
+    public ProjectsManager(ProjectsDAO projectsDao, AnalyticsClient analyticsClient) {
         this.projectsDao = projectsDao;
+        this.analyticsClient = analyticsClient;
     }
 
     public Set<ImmutableProject> getUserCreatedProjects(int userId) {
@@ -26,6 +28,7 @@ public class ProjectsManager {
                 newProject.getDescription().orElse(null)
         );
         ImmutableProject insertedProject = projectsDao.getProjectById(generatedId);
+        analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedProject, AnalyticsClient.Events.ProjectInteraction.Types.CREATED).build());
         return Response.ok(insertedProject).build();
     }
 }

@@ -39,7 +39,7 @@ public class TasksManager {
     public Response insertTask(ImmutableNewTask newTask) {
         int generatedId = tasksDao.insertTask(newTask);
         ImmutableTask insertedTask = getTaskById(generatedId);
-        analyticsClient.trackEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedTask, AnalyticsClient.Events.TaskInteraction.Types.CREATED_TASK).build());
+        analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedTask, AnalyticsClient.Events.TaskInteraction.Types.CREATED).build());
 
         return Response.ok(insertedTask).build();
     }
@@ -48,6 +48,7 @@ public class TasksManager {
         int taskId = newInfo.getTaskId();
         ImmutableTask currentInfo = getTaskById(taskId);
         Response.ResponseBuilder response;
+        ImmutableTask oldTask = getTaskById(taskId);
 
         try {
             int rowsAffected = tasksDao.updateTask(
@@ -67,6 +68,10 @@ public class TasksManager {
             }
 
             ImmutableTask updatedTask = getTaskById(taskId);
+            if (!newInfo.getDescription().isPresent()) {
+                // We do not care about updated descriptions
+                analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(updatedTask, oldTask).build());
+            }
             response = Response.ok(updatedTask);
         } catch (UnableToExecuteStatementException e) {
             response = Response.notModified();

@@ -46,11 +46,11 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
         final OkHttpClient httpClient = new OkHttpClient();
-        final AnalyticsClient analyticsManager = new AnalyticsClient(httpClient, objectMapper);
+        final AnalyticsClient analyticsClient = new AnalyticsClient(httpClient, objectMapper);
 
-        final TasksManager tasksManager = new TasksManager(tasksDao, analyticsManager);
-        final ProjectsManager projectsManager = new ProjectsManager(projectsDAO);
-        final UsersManager usersManager = new UsersManager(usersDao, projectsManager);
+        final TasksManager tasksManager = new TasksManager(tasksDao, analyticsClient);
+        final ProjectsManager projectsManager = new ProjectsManager(projectsDAO, analyticsClient);
+        final UsersManager usersManager = new UsersManager(usersDao, analyticsClient, projectsManager);
 
         // I could pass a manager here instead of a DAO
         environment.jersey().register(new TasksResource(tasksManager));

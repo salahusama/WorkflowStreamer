@@ -20,7 +20,7 @@ public class TaskMapper implements ResultSetMapper<ImmutableTask> {
                 .description(r.getString("description"))
                 .createdAt(r.getTimestamp("created_at"))
                 .estimatedWork(r.getInt("est_work"))
-                .dueDate(Optional.ofNullable(r.getDate("due_date")));
+                .dueDate(Optional.ofNullable(r.getTimestamp("due_date")));
 
         String priority = r.getString("priority");
 

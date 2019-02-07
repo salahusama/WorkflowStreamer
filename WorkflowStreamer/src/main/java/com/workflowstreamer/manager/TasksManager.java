@@ -40,7 +40,6 @@ public class TasksManager {
         int generatedId = tasksDao.insertTask(newTask);
         ImmutableTask insertedTask = getTaskById(generatedId);
         analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedTask, AnalyticsClient.Events.TaskInteraction.Types.CREATED).build());
-
         return Response.ok(insertedTask).build();
     }
 

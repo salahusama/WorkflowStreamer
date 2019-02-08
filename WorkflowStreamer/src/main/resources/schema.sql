@@ -9,6 +9,7 @@ CREATE TABLE users (
 CREATE TABLE user_stages (
 	user_id		INT,
 	stage		VARCHAR(50),
+	view_order  INT,
 	PRIMARY KEY (user_id, stage)
 );
 
@@ -22,7 +23,7 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE tasks (
-	task_id	INT,
+	task_id	    INT,
 	project_id	INT,
 	creator_id	INT,
 	stage		VARCHAR(50),

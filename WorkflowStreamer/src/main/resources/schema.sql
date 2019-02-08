@@ -35,6 +35,6 @@ CREATE TABLE tasks (
 	created_at	DATETIME,
 	PRIMARY KEY (task_id),
 	FOREIGN KEY (creator_id) REFERENCES users (user_id),
-	FOREIGN KEY (project_id) REFERENCES project (project_id),
+	FOREIGN KEY (project_id) REFERENCES projects (project_id),
 	FOREIGN KEY (creator_id, stage) REFERENCES user_stages (user_id, stage)
 );

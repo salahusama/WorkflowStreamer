@@ -20,6 +20,6 @@ public interface ProjectsDAO {
     Set<ImmutableProject> getProjectsByCreator(@Bind("userId") int userId);
 
     @GetGeneratedKeys
-    @SqlUpdate("INSERT INTO PROJECTS (creator_id, name, description) VALUES (:creatorId, :name, :desc)")
+    @SqlUpdate("INSERT INTO projects (creator_id, name, description) VALUES (:creatorId, :name, :desc)")
     int insertProject(@Bind("creatorId") int creatorId, @Bind("name") String name, @Bind("desc") String description);
 }

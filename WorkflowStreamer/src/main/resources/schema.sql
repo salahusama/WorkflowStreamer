@@ -1,5 +1,5 @@
 CREATE TABLE users (
-	user_id		INT,
+	user_id		INT AUTO_INCREMENT,
 	email		VARCHAR(100) UNIQUE,
 	username	VARCHAR(50) UNIQUE,
 	password	LONGTEXT,
@@ -14,7 +14,7 @@ CREATE TABLE user_stages (
 );
 
 CREATE TABLE projects (
-	project_id	INT,
+	project_id	INT AUTO_INCREMENT,
 	creator_id	INT,
 	name		VARCHAR(50),
 	description	LONGTEXT,
@@ -23,7 +23,7 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE tasks (
-	task_id	    INT,
+	task_id	    INT AUTO_INCREMENT,
 	project_id	INT,
 	creator_id	INT,
 	stage		VARCHAR(50),

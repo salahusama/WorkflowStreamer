@@ -17,7 +17,7 @@ public class TaskMapper implements ResultSetMapper<ImmutableTask> {
                 .creatorId(r.getInt("creator_id"))
                 .stage(r.getString("stage"))
                 .title(r.getString("title"))
-                .description(r.getString("description"))
+                .description(Optional.ofNullable(r.getString("description")))
                 .createdAt(r.getTimestamp("created_at"))
                 .estimatedWork(r.getInt("est_work"))
                 .dueDate(Optional.ofNullable(r.getTimestamp("due_date")));

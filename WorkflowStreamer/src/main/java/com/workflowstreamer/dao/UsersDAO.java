@@ -11,11 +11,11 @@ import java.util.Set;
 
 public interface UsersDAO {
     @Mapper(UserMapper.class)
-    @SqlQuery("select user_id, email, username, password from users where username = :username")
+    @SqlQuery("SELECT user_id, email, username, password FROM users WHERE username = :username")
     ImmutableUser getUserByUsername(@Bind("username") String username);
 
     @Mapper(UserMapper.class)
-    @SqlQuery("select user_id, email, username, password from users where user_id = :user_id")
+    @SqlQuery("SELECT user_id, email, username, password FROM users WHERE user_id = :user_id")
     ImmutableUser getUserById(@Bind("user_id") int userId);
 
     @GetGeneratedKeys

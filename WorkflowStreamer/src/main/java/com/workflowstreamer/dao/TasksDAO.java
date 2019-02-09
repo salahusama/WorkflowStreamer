@@ -16,23 +16,23 @@ import java.util.Set;
 
 public interface TasksDAO {
     @Mapper(TaskMapper.class)
-    @SqlQuery("select * from tasks where creator_id = :userId")
+    @SqlQuery("SELECT * FROM tasks WHERE creator_id = :userId")
     Set<ImmutableTask> getTasksByUser(@Bind("userId") int userId);
 
     @Mapper(TaskMapper.class)
-    @SqlQuery("select * from tasks where project_id = :projectId")
+    @SqlQuery("SELECT * FROM tasks WHERE project_id = :projectId")
     Set<ImmutableTask> getTasksByProjectId(@Bind("projectId") int projectId);
 
     @Mapper(TaskMapper.class)
-    @SqlQuery("select * from tasks where task_id = :id")
+    @SqlQuery("SELECT * FROM tasks WHERE task_id = :id")
     ImmutableTask getTaskById(@Bind("id") int id);
 
     @GetGeneratedKeys
-    @SqlUpdate("INSERT INTO TASKS (project_id, creator_id, stage, title, description, created_at, priority, est_work)" +
+    @SqlUpdate("INSERT INTO tasks (project_id, creator_id, stage, title, description, created_at, priority, est_work)" +
                "VALUES (:projectId, :creatorId, :stage, :title, :description, :createdAt, :priority, :estimatedWork)")
     int insertTask(@NewTaskBinder ImmutableNewTask newTask);
 
-    @SqlUpdate("UPDATE TASKS " +
+    @SqlUpdate("UPDATE tasks " +
                "SET project_id = :projectId, stage = :stage, title = :title, description = :desc, priority = :priority, est_work = :est_work, due_date = :due_date " +
                "WHERE task_id = :taskId")
     int updateTask(
@@ -43,6 +43,6 @@ public interface TasksDAO {
             @Bind("desc") String description,
             @Bind("priority") Priority priority,
             @Bind("est_work") Integer estimatedWork,
-            @Bind("due_date") Date dueDate // YYYY-MM-DD
+            @Bind("due_date") Date dueDate
     );
 }

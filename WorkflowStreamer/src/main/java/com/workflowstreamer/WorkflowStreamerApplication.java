@@ -5,9 +5,11 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.dao.ProjectsDAO;
 import com.workflowstreamer.dao.TasksDAO;
+import com.workflowstreamer.dao.TeamsDAO;
 import com.workflowstreamer.dao.UsersDAO;
 import com.workflowstreamer.manager.ProjectsManager;
 import com.workflowstreamer.manager.TasksManager;
+import com.workflowstreamer.manager.TeamsManager;
 import com.workflowstreamer.manager.UsersManager;
 import com.workflowstreamer.resources.ProjectsResource;
 import com.workflowstreamer.resources.TasksResource;
@@ -42,15 +44,17 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final UsersDAO usersDao = jdbi.onDemand(UsersDAO.class);
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
         final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
+        final TeamsDAO teamsDAO = jdbi.onDemand(TeamsDAO.class);
 
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
         final OkHttpClient httpClient = new OkHttpClient();
         final AnalyticsClient analyticsClient = new AnalyticsClient(httpClient, objectMapper);
 
+        final TeamsManager teamsManager = new TeamsManager(teamsDAO, analyticsClient);
         final TasksManager tasksManager = new TasksManager(tasksDao, analyticsClient);
         final ProjectsManager projectsManager = new ProjectsManager(projectsDAO, analyticsClient);
-        final UsersManager usersManager = new UsersManager(usersDao, analyticsClient, projectsManager);
+        final UsersManager usersManager = new UsersManager(usersDao, analyticsClient, projectsManager, teamsManager);
 
         // I could pass a manager here instead of a DAO
         environment.jersey().register(new TasksResource(tasksManager));

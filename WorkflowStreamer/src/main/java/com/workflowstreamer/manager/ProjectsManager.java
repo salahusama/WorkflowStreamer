@@ -22,11 +22,7 @@ public class ProjectsManager {
     }
 
     public Response insertProject(ImmutableNewProject newProject) {
-        int generatedId = projectsDao.insertProject(
-                newProject.getCreatorId(),
-                newProject.getName(),
-                newProject.getDescription().orElse(null)
-        );
+        int generatedId = projectsDao.insertProject(newProject);
         ImmutableProject insertedProject = projectsDao.getProjectById(generatedId);
         analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(insertedProject, AnalyticsClient.Events.ProjectInteraction.Types.CREATED).build());
         return Response.ok(insertedProject).build();

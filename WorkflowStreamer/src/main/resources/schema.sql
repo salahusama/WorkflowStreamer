@@ -13,13 +13,37 @@ CREATE TABLE user_stages (
 	PRIMARY KEY (user_id, stage)
 );
 
+CREATE TABLE teams (
+	team_id 	INT AUTO_INCREMENT,
+    name		VARCHAR(50),
+	description	LONGTEXT,
+    PRIMARY KEY (team_id)
+);
+
+CREATE TABLE roles (
+	role_id 	INT AUTO_INCREMENT,
+    title	 	VARCHAR(20),
+	description	LONGTEXT,
+    PRIMARY KEY (role_id)
+);
+
+CREATE TABLE user_teams (
+	team_id 	INT,
+    user_id 	INT,
+	role_id		INT,
+    PRIMARY KEY (team_id, user_id),
+    FOREIGN KEY (team_id) REFERENCES teams (team_id)
+);
+
 CREATE TABLE projects (
 	project_id	INT AUTO_INCREMENT,
 	creator_id	INT,
+	team_id     INT,
 	name		VARCHAR(50),
 	description	LONGTEXT,
 	PRIMARY KEY (project_id),
-	FOREIGN KEY (creator_id) REFERENCES users (user_id)
+	FOREIGN KEY (creator_id) REFERENCES users (user_id),
+	FOREIGN KEY (owned_by) REFERENCES teams (team_id)
 );
 
 CREATE TABLE tasks (

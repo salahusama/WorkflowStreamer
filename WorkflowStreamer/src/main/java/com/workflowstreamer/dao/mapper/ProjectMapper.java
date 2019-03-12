@@ -13,6 +13,7 @@ public class ProjectMapper implements ResultSetMapper<ImmutableProject> {
         return ImmutableProject.builder()
                 .projectId(r.getInt("project_id"))
                 .creatorId(r.getInt("creator_id"))
+                .teamId(r.getInt("team_id"))
                 .name(r.getString("name"))
                 .description(Optional.ofNullable(r.getString("description")))
                 .build();

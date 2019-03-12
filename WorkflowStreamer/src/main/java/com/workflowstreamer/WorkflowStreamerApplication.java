@@ -13,6 +13,7 @@ import com.workflowstreamer.manager.TeamsManager;
 import com.workflowstreamer.manager.UsersManager;
 import com.workflowstreamer.resources.ProjectsResource;
 import com.workflowstreamer.resources.TasksResource;
+import com.workflowstreamer.resources.TeamsResource;
 import com.workflowstreamer.resources.UsersResource;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi.DBIFactory;
@@ -60,5 +61,6 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         environment.jersey().register(new TasksResource(tasksManager));
         environment.jersey().register(new UsersResource(usersManager));
         environment.jersey().register(new ProjectsResource(projectsManager));
+        environment.jersey().register(new TeamsResource(teamsManager));
     }
 }

@@ -16,12 +16,17 @@ public class TeamsManager {
         this.analyticsClient = analyticsClient;
     }
 
+    public void addUserToTeam(int userId, int teamId) {
+        teamsDAO.addUserToTeam(userId, teamId);
+    }
+
     public Set<ImmutableTeam> getUserTeams(int userId) {
         return teamsDAO.getTeamsByUser(userId);
     }
 
     public ImmutableTeam insertTeam(ImmutableNewTeam newTeam) {
         int teamId = teamsDAO.insertTeam(newTeam);
+        addUserToTeam(newTeam.getUserId(), teamId);
         return teamsDAO.getTeamById(teamId);
     }
 }

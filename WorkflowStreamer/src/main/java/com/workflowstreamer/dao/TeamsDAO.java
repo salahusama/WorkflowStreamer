@@ -23,6 +23,9 @@ public interface TeamsDAO {
               "WHERE user_id = :userId")
     Set<ImmutableTeam> getTeamsByUser(@Bind("userId") int userId);
 
+    @SqlUpdate("INSERT INTO user_teams (user_id, team_id) VALUES (:userId, :teamId)")
+    void addUserToTeam(@Bind("userId") int userId, @Bind("teamId") int teamId);
+
     @GetGeneratedKeys
     @SqlUpdate("INSERT INTO teams (name, description) VALUES (:name, :description)")
     int insertTeam(@NewTeamBinder ImmutableNewTeam newTeam);

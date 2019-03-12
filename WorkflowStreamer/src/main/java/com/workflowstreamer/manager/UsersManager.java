@@ -80,6 +80,7 @@ public class UsersManager {
         ImmutableTeam defaultTeam = teamsManager.insertTeam(ImmutableNewTeam.builder()
                 .name(DEFAULT_TEAM_NAME)
                 .description(DEFAULT_TEAM_DESCRIPTION)
+                .userId(userId)
                 .build()
         );
 

@@ -29,7 +29,7 @@ public class UsersManager {
     }
 
     public ImmutableUser getUserById(int id) {
-        return usersDao.getUserById(id);
+        return usersDao.getUserById(id).withTeams(teamsManager.getUserTeams(id));
     }
 
     public Set<ImmutableUserStage> getUserStagesByUserId(int userId) {
@@ -41,7 +41,7 @@ public class UsersManager {
         ImmutableUser user = usersDao.getUserByUsername(loginData.getUsername());
 
         if (user != null && user.getPassword().equals(loginData.getPassword())) {
-            response = Response.ok(user);
+            response = Response.ok(user.withTeams(teamsManager.getUserTeams(user.getUserId())));
         } else {
             response = Response.status(Response.Status.NOT_FOUND);
         }
@@ -55,7 +55,7 @@ public class UsersManager {
         try {
             int userId = usersDao.insertUser(newUser.getEmail(), newUser.getUsername(), newUser.getPassword());
             ImmutableUser insertedUser = usersDao.getUserById(userId);
-            response = Response.ok(insertedUser);
+            response = Response.ok(insertedUser.withTeams(teamsManager.getUserTeams(userId)));
             addDefaults(insertedUser.getUserId());
         } catch (UnableToExecuteStatementException e) {
             response = Response.status(Response.Status.FORBIDDEN);

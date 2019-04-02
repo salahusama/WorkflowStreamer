@@ -27,7 +27,7 @@ public class ProjectsResource {
     @Path("/project")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response insertTask(ImmutableNewProject newProject) {
+    public Response insertProject(ImmutableNewProject newProject) {
         // TODO: get userId from auth
         return projectsManager.insertProject(newProject);
     }

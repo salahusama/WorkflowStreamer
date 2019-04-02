@@ -62,3 +62,14 @@ CREATE TABLE tasks (
 	FOREIGN KEY (project_id) REFERENCES projects (project_id),
 	FOREIGN KEY (creator_id, stage) REFERENCES user_stages (user_id, stage)
 );
+
+CREATE TABLE task_comments (
+	comment_id INT AUTO_INCREMENT,
+    task_id INT,
+    creator_id INT,
+    text LONGTEXT,
+
+    PRIMARY KEY (comment_id),
+    FOREIGN KEY (task_id) REFERENCES tasks (task_id),
+    FOREIGN KEY (creator_id) REFERENCES users (user_id)
+);

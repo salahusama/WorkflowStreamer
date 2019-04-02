@@ -3,10 +3,7 @@ package com.workflowstreamer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.workflowstreamer.clients.AnalyticsClient;
-import com.workflowstreamer.dao.ProjectsDAO;
-import com.workflowstreamer.dao.TasksDAO;
-import com.workflowstreamer.dao.TeamsDAO;
-import com.workflowstreamer.dao.UsersDAO;
+import com.workflowstreamer.dao.*;
 import com.workflowstreamer.manager.ProjectsManager;
 import com.workflowstreamer.manager.TasksManager;
 import com.workflowstreamer.manager.TeamsManager;
@@ -44,6 +41,7 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
 
         final UsersDAO usersDao = jdbi.onDemand(UsersDAO.class);
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
+        final CommentsDAO commentsDAO = jdbi.onDemand(CommentsDAO.class);
         final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
         final TeamsDAO teamsDAO = jdbi.onDemand(TeamsDAO.class);
 
@@ -53,7 +51,7 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final AnalyticsClient analyticsClient = new AnalyticsClient(httpClient, objectMapper);
 
         final TeamsManager teamsManager = new TeamsManager(teamsDAO, analyticsClient);
-        final TasksManager tasksManager = new TasksManager(tasksDao, analyticsClient);
+        final TasksManager tasksManager = new TasksManager(tasksDao, commentsDAO, analyticsClient);
         final ProjectsManager projectsManager = new ProjectsManager(projectsDAO, analyticsClient);
         final UsersManager usersManager = new UsersManager(usersDao, analyticsClient, projectsManager, teamsManager);
 

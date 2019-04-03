@@ -64,7 +64,7 @@ public class TasksResource {
         return tasksManager.getTaskComments(taskId);
     }
 
-    @POST
+    @PUT
     @Path("/task/{taskId}/comments")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

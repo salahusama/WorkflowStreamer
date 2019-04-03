@@ -1,9 +1,8 @@
 package com.workflowstreamer.manager;
 
 import com.workflowstreamer.clients.AnalyticsClient;
-import com.workflowstreamer.core.ImmutableEditableTask;
-import com.workflowstreamer.core.ImmutableNewTask;
-import com.workflowstreamer.core.ImmutableTask;
+import com.workflowstreamer.core.*;
+import com.workflowstreamer.dao.CommentsDAO;
 import com.workflowstreamer.dao.TasksDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
@@ -13,10 +12,12 @@ import java.util.stream.Collectors;
 
 public class TasksManager {
     private final TasksDAO tasksDao;
+    private final CommentsDAO commentsDAO;
     private final AnalyticsClient analyticsClient;
 
-    public TasksManager(TasksDAO tasksDao, AnalyticsClient analyticsClient) {
+    public TasksManager(TasksDAO tasksDao, CommentsDAO commentsDAO, AnalyticsClient analyticsClient) {
         this.tasksDao = tasksDao;
+        this.commentsDAO = commentsDAO;
         this.analyticsClient = analyticsClient;
     }
 
@@ -77,6 +78,18 @@ public class TasksManager {
         }
 
         return response.build();
+    }
+
+    public Response getTaskComments(int taskId) {
+        Set<ImmutableComment> comments = commentsDAO.getCommentsForTask(taskId);
+        return Response.ok(comments).build();
+    }
+
+    public Response addComment(ImmutableNewComment newComment) {
+        int generatedId = commentsDAO.addComment(newComment);
+        ImmutableComment addedComment = commentsDAO.getCommentById(generatedId);
+        // TODO: Add analytics tracking
+        return Response.ok(addedComment).build();
     }
 
     private boolean checkRecommendation(ImmutableTask task) {

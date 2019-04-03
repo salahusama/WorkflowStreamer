@@ -1,6 +1,7 @@
 package com.workflowstreamer.resources;
 
 import com.workflowstreamer.core.ImmutableEditableTask;
+import com.workflowstreamer.core.ImmutableNewComment;
 import com.workflowstreamer.core.ImmutableNewTask;
 import com.workflowstreamer.core.ImmutableTask;
 import com.workflowstreamer.manager.TasksManager;
@@ -54,5 +55,20 @@ public class TasksResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateTask(ImmutableEditableTask task) {
         return tasksManager.updateTask(task);
+    }
+
+    @GET
+    @Path("/task/{taskId}/comments")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCommentsForTask(@PathParam("taskId") int taskId) {
+        return tasksManager.getTaskComments(taskId);
+    }
+
+    @POST
+    @Path("/task/{taskId}/comments")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addComment(ImmutableNewComment newComment) {
+        return tasksManager.addComment(newComment);
     }
 }

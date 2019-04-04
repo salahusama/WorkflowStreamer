@@ -22,8 +22,8 @@ public interface TasksDAO {
     @Mapper(TaskMapper.class)
     @SqlQuery("SELECT * FROM tasks " +
               "JOIN projects USING (project_id) " +
-              "WHERE team_id IN (<ids>)")
-    Set<ImmutableTask> getTasksByTeamIds(@BindIn("ids") List<Integer> teamIds);
+              "WHERE team_id IN (<teamIds>)")
+    Set<ImmutableTask> getTasksByTeamIds(@BindIn("teamIds") List<Integer> teamIds);
 
     @Mapper(TaskMapper.class)
     @SqlQuery("SELECT * FROM tasks WHERE creator_id = :userId")

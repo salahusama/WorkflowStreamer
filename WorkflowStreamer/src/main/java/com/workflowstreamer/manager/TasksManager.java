@@ -1,5 +1,6 @@
 package com.workflowstreamer.manager;
 
+import com.google.common.collect.ImmutableSet;
 import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.CommentsDAO;
@@ -38,8 +39,10 @@ public class TasksManager {
     public Response getTasksByUserTeams(int userId) {
         Set<ImmutableTeam> userTeams = teamsManager.getUserTeams(userId);
 
+        // Each user must have be in at least 1 team (default team)
+        // This is a measure in case sth goes wrong
         if (userTeams.size() == 0) {
-            return Response.ok().build();
+            return Response.ok(ImmutableSet.of()).build();
         }
 
         List<Integer> teamIds = userTeams.stream().map(ImmutableTeam::getTeamId).collect(Collectors.toList());

@@ -40,6 +40,13 @@ public class TasksResource {
         return tasksManager.getTasksCreatedByUser(userId);
     }
 
+    @GET
+    @Path("/teams/user/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTasksByUserTeams(@PathParam("userId") int userId) {
+        return tasksManager.getTasksByUserTeams(userId);
+    }
+
     @PUT
     @Path("/task")
     @Consumes(MediaType.APPLICATION_JSON)

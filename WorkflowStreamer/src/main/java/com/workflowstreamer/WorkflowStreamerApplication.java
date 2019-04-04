@@ -40,6 +40,7 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final DBI jdbi = factory.build(environment, config.getDataSourceFactory(), "mysql");
 
         final UsersDAO usersDao = jdbi.onDemand(UsersDAO.class);
+        final StagesDAO stagesDAO = jdbi.onDemand(StagesDAO.class);
         final TasksDAO tasksDao = jdbi.onDemand(TasksDAO.class);
         final CommentsDAO commentsDAO = jdbi.onDemand(CommentsDAO.class);
         final ProjectsDAO projectsDAO = jdbi.onDemand(ProjectsDAO.class);
@@ -53,7 +54,7 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final TeamsManager teamsManager = new TeamsManager(teamsDAO, analyticsClient);
         final TasksManager tasksManager = new TasksManager(teamsManager, tasksDao, commentsDAO, analyticsClient);
         final ProjectsManager projectsManager = new ProjectsManager(projectsDAO, analyticsClient);
-        final UsersManager usersManager = new UsersManager(usersDao, analyticsClient, projectsManager, teamsManager);
+        final UsersManager usersManager = new UsersManager(usersDao, stagesDAO, analyticsClient, projectsManager, teamsManager);
 
         // I could pass a manager here instead of a DAO
         environment.jersey().register(new TasksResource(tasksManager));

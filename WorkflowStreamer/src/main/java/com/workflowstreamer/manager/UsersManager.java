@@ -3,6 +3,7 @@ package com.workflowstreamer.manager;
 import com.google.common.collect.ImmutableList;
 import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.*;
+import com.workflowstreamer.dao.StagesDAO;
 import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
@@ -17,12 +18,14 @@ public class UsersManager {
     private static final String DEFAULT_TEAM_DESCRIPTION = "Every user has a default team they belong to.";
 
     private final UsersDAO usersDao;
+    private final StagesDAO stagesDao;
     private final AnalyticsClient analyticsClient;
     private final ProjectsManager projectsManager;
     private final TeamsManager teamsManager;
 
-    public UsersManager(UsersDAO usersDao, AnalyticsClient analyticsClient, ProjectsManager projectsManager, TeamsManager teamsManager) {
+    public UsersManager(UsersDAO usersDao, StagesDAO stagesDao, AnalyticsClient analyticsClient, ProjectsManager projectsManager, TeamsManager teamsManager) {
         this.usersDao = usersDao;
+        this.stagesDao = stagesDao;
         this.analyticsClient = analyticsClient;
         this.projectsManager = projectsManager;
         this.teamsManager = teamsManager;
@@ -32,8 +35,8 @@ public class UsersManager {
         return usersDao.getUserById(id).withTeams(teamsManager.getUserTeams(id));
     }
 
-    public Set<ImmutableUserStage> getUserStagesByUserId(int userId) {
-        return usersDao.getUserStagesByUserId(userId);
+    public Set<ImmutableStage> getStages() {
+        return stagesDao.getStages();
     }
 
     public Response login(ImmutableLoginData loginData) {

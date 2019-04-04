@@ -36,17 +36,21 @@ public class TasksManager {
                 .collect(Collectors.toSet());
     }
 
-    public Response getTasksByUserTeams(int userId) {
+    public Set<ImmutableTask> getTasksByUserTeams(int userId) {
         Set<ImmutableTeam> userTeams = teamsManager.getUserTeams(userId);
 
         // Each user must have be in at least 1 team (default team)
         // This is a measure in case sth goes wrong
         if (userTeams.size() == 0) {
-            return Response.ok(ImmutableSet.of()).build();
+            return ImmutableSet.of();
         }
 
         List<Integer> teamIds = userTeams.stream().map(ImmutableTeam::getTeamId).collect(Collectors.toList());
-        return Response.ok(tasksDao.getTasksByTeamIds(teamIds)).build();
+        Set<ImmutableTask> teamTasks = tasksDao.getTasksByTeamIds(teamIds);
+
+        return teamTasks.stream()
+                .map(task -> task.withIsRecommended(checkRecommendation(task)))
+                .collect(Collectors.toSet());
     }
 
     public ImmutableTask getTaskById(int taskId) {

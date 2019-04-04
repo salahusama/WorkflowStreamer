@@ -43,7 +43,7 @@ public class TasksResource {
     @GET
     @Path("/teams/user/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasksByUserTeams(@PathParam("userId") int userId) {
+    public Set<ImmutableTask> getTasksByUserTeams(@PathParam("userId") int userId) {
         return tasksManager.getTasksByUserTeams(userId);
     }
 

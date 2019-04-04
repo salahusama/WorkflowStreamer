@@ -10,11 +10,21 @@ import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
+import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
+import org.skife.jdbi.v2.unstable.BindIn;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
+@UseStringTemplate3StatementLocator
 public interface TasksDAO {
+    @Mapper(TaskMapper.class)
+    @SqlQuery("SELECT * FROM tasks " +
+              "JOIN projects USING (project_id) " +
+              "WHERE team_id IN (<teamIds>)")
+    Set<ImmutableTask> getTasksByTeamIds(@BindIn("teamIds") List<Integer> teamIds);
+
     @Mapper(TaskMapper.class)
     @SqlQuery("SELECT * FROM tasks WHERE creator_id = :userId")
     Set<ImmutableTask> getTasksByUser(@Bind("userId") int userId);

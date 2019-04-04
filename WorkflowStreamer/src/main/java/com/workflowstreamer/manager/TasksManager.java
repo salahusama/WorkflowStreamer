@@ -1,5 +1,6 @@
 package com.workflowstreamer.manager;
 
+import com.google.common.collect.ImmutableSet;
 import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.CommentsDAO;
@@ -7,17 +8,20 @@ import com.workflowstreamer.dao.TasksDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TasksManager {
     private final TasksDAO tasksDao;
     private final CommentsDAO commentsDAO;
+    private final TeamsManager teamsManager;
     private final AnalyticsClient analyticsClient;
 
-    public TasksManager(TasksDAO tasksDao, CommentsDAO commentsDAO, AnalyticsClient analyticsClient) {
+    public TasksManager(TeamsManager teamsManager, TasksDAO tasksDao, CommentsDAO commentsDAO, AnalyticsClient analyticsClient) {
         this.tasksDao = tasksDao;
         this.commentsDAO = commentsDAO;
+        this.teamsManager = teamsManager;
         this.analyticsClient = analyticsClient;
     }
 
@@ -30,6 +34,19 @@ public class TasksManager {
         return userTasks.stream()
                 .map(task -> task.withIsRecommended(checkRecommendation(task)))
                 .collect(Collectors.toSet());
+    }
+
+    public Response getTasksByUserTeams(int userId) {
+        Set<ImmutableTeam> userTeams = teamsManager.getUserTeams(userId);
+
+        // Each user must have be in at least 1 team (default team)
+        // This is a measure in case sth goes wrong
+        if (userTeams.size() == 0) {
+            return Response.ok(ImmutableSet.of()).build();
+        }
+
+        List<Integer> teamIds = userTeams.stream().map(ImmutableTeam::getTeamId).collect(Collectors.toList());
+        return Response.ok(tasksDao.getTasksByTeamIds(teamIds)).build();
     }
 
     public ImmutableTask getTaskById(int taskId) {

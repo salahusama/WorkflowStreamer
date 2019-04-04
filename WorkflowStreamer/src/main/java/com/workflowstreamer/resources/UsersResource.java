@@ -1,9 +1,6 @@
 package com.workflowstreamer.resources;
 
-import com.workflowstreamer.core.ImmutableLoginData;
-import com.workflowstreamer.core.ImmutableNewUser;
-import com.workflowstreamer.core.ImmutableUser;
-import com.workflowstreamer.core.ImmutableUserStage;
+import com.workflowstreamer.core.*;
 import com.workflowstreamer.manager.UsersManager;
 
 import javax.ws.rs.*;
@@ -29,8 +26,8 @@ public class UsersResource {
     @GET
     @Path("/user/{id}/stages")
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<ImmutableUserStage> getUserStagesForUser(@PathParam("id") int id) {
-        return usersManager.getUserStagesByUserId(id);
+    public Set<ImmutableStage> getUserStagesForUser(@PathParam("id") int id) {
+        return usersManager.getStages();
     }
 
     @POST

@@ -6,13 +6,6 @@ CREATE TABLE users (
 	PRIMARY KEY (user_id)
 );
 
-CREATE TABLE user_stages (
-	user_id		INT,
-	stage		VARCHAR(50),
-	view_order  INT,
-	PRIMARY KEY (user_id, stage)
-);
-
 CREATE TABLE teams (
 	team_id 	INT AUTO_INCREMENT,
     name		VARCHAR(50),
@@ -46,6 +39,12 @@ CREATE TABLE projects (
 	FOREIGN KEY (owned_by) REFERENCES teams (team_id)
 );
 
+CREATE TABLE stages (
+	stage		VARCHAR(50),
+	view_order  INT,
+	PRIMARY KEY (stage)
+);
+
 CREATE TABLE tasks (
 	task_id	    INT AUTO_INCREMENT,
 	project_id	INT,
@@ -60,7 +59,7 @@ CREATE TABLE tasks (
 	PRIMARY KEY (task_id),
 	FOREIGN KEY (creator_id) REFERENCES users (user_id),
 	FOREIGN KEY (project_id) REFERENCES projects (project_id),
-	FOREIGN KEY (creator_id, stage) REFERENCES user_stages (user_id, stage)
+	FOREIGN KEY (stage) REFERENCES stages (stage)
 );
 
 CREATE TABLE task_comments (

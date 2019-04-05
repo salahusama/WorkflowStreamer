@@ -16,6 +16,10 @@ public class TeamsManager {
         this.analyticsClient = analyticsClient;
     }
 
+    public int getTeamIdByTaskId(int taskId) {
+        return teamsDAO.getTeamIdByTaskId(taskId);
+    }
+
     public void addUserToTeam(int userId, int teamId) {
         teamsDAO.addUserToTeam(userId, teamId);
     }

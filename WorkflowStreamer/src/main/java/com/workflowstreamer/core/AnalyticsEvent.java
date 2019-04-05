@@ -13,16 +13,12 @@ import java.util.Optional;
 @JsonDeserialize
 public interface AnalyticsEvent {
     Optional<String> getId();
-
     String getEventName();
     String getEventType();
     Date getTime();
-
     Optional<Integer> getProjectId();
     Optional<Integer> getTeamId();
     Optional<Integer> getUserId();
-
     Optional<Integer> getTaskId();
-
     Optional<ImmutableMap<String, String>> getExtraParams();
 }

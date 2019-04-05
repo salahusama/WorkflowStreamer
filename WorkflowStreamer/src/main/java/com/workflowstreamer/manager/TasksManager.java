@@ -91,7 +91,7 @@ public class TasksManager {
             ImmutableTask updatedTask = getTaskById(taskId);
             if (!newInfo.getDescription().isPresent()) {
                 // We do not care about updated descriptions
-                analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(updatedTask, oldTask).build());
+                analyticsClient.fireEvent(AnalyticsClient.AnalyticsEventBuilderFrom(teamsManager.getTeamIdByTaskId(taskId), updatedTask, oldTask).build());
             }
             response = Response.ok(updatedTask);
         } catch (UnableToExecuteStatementException e) {

@@ -29,4 +29,9 @@ public interface TeamsDAO {
     @GetGeneratedKeys
     @SqlUpdate("INSERT INTO teams (name, description) VALUES (:name, :description)")
     int insertTeam(@NewTeamBinder ImmutableNewTeam newTeam);
+
+    @SqlUpdate("SELECT team_id FROM tasks " +
+               "JOIN projects USING (project_id) " +
+               "WHERE task_id = :taskId")
+    int getTeamIdByTaskId(@Bind("taskId") int taskId);
 }

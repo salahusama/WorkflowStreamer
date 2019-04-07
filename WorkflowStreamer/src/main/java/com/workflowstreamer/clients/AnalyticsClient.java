@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMap;
 import com.workflowstreamer.core.ImmutableAnalyticsEvent;
 import com.workflowstreamer.core.ImmutableProject;
 import com.workflowstreamer.core.ImmutableTask;
-import com.workflowstreamer.dao.TeamsDAO;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -35,12 +34,10 @@ public class AnalyticsClient {
         }
     }
 
-    private final TeamsDAO teamsDAO;
     private final OkHttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    public AnalyticsClient(TeamsDAO teamsDAO, OkHttpClient httpClient, ObjectMapper objectMapper) {
-        this.teamsDAO = teamsDAO;
+    public AnalyticsClient(OkHttpClient httpClient, ObjectMapper objectMapper) {
         this.httpClient = httpClient;
         this.objectMapper = objectMapper;
     }

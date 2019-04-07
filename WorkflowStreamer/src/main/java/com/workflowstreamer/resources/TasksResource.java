@@ -47,6 +47,13 @@ public class TasksResource {
         return tasksManager.getTasksByUserTeams(userId);
     }
 
+    @GET
+    @Path("/teams/user/{userId}/beta")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<ImmutableTask> getTasksByUserTeamsBeta(@PathParam("userId") int userId) {
+        return tasksManager.getTasksByUserTeamsBeta(userId);
+    }
+
     @PUT
     @Path("/task")
     @Consumes(MediaType.APPLICATION_JSON)

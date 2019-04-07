@@ -42,20 +42,11 @@ public class RecommendationManager {
     }
 
     public static int getTaskScore(ImmutableTask task) {
-        /*
-        int getCreatorId(); role in team
-        String getStage();
-        Timestamp getCreatedAt();
-        Optional<Priority> getPriority();
-        Optional<Integer> getEstimatedWork();
-        Optional<Date> getDueDate();
-        */
         int score = 0; // Max should be 100
 
         Priority priority = task.getPriority().orElse(Priority.LOW);
         String stage = task.getStage();
         Timestamp createdAt = task.getCreatedAt();
-
         Optional<Integer> estimatedWork = task.getEstimatedWork();
         Optional<Date> dueDate = task.getDueDate();
 

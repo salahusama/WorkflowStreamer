@@ -38,4 +38,11 @@ public class TeamsResource {
     public Set<ImmutableUserRole> getTeamMembers(@PathParam("teamId") int teamId) {
         return teamsManager.getTeamMembers(teamId);
     }
+
+    @PUT
+    @Path("/team/{teamId}/members")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addUserToTeam(@PathParam("teamId") int teamId, String userEmail) {
+        return teamsManager.addUserToTeam(teamId, userEmail);
+    }
 }

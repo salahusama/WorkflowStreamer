@@ -6,10 +6,7 @@ import com.workflowstreamer.core.ImmutableUserRole;
 import com.workflowstreamer.dao.binder.NewTeamBinder;
 import com.workflowstreamer.dao.mapper.TeamMapper;
 import com.workflowstreamer.dao.mapper.UserRoleMapper;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
 import java.util.Set;
@@ -25,14 +22,11 @@ public interface TeamsDAO {
               "WHERE user_id = :userId")
     Set<ImmutableTeam> getTeamsByUser(@Bind("userId") int userId);
 
-    @SqlUpdate("INSERT INTO user_teams (user_id, team_id) VALUES (:userId, :teamId)")
-    void addUserToTeam(@Bind("userId") int userId, @Bind("teamId") int teamId);
-
     @GetGeneratedKeys
     @SqlUpdate("INSERT INTO teams (name, description) VALUES (:name, :description)")
     int insertTeam(@NewTeamBinder ImmutableNewTeam newTeam);
 
-    @SqlUpdate("SELECT team_id FROM tasks " +
+    @SqlQuery("SELECT team_id FROM tasks " +
                "JOIN projects USING (project_id) " +
                "WHERE task_id = :taskId")
     int getTeamIdByTaskId(@Bind("taskId") int taskId);
@@ -43,4 +37,14 @@ public interface TeamsDAO {
               "JOIN users USING (user_id) " +
               "WHERE team_id = :teamId")
     Set<ImmutableUserRole> getTeamMembers(@Bind("teamId") int teamId);
+
+    @Mapper(UserRoleMapper.class)
+    @SqlQuery("SELECT user_id, username, email, title, description FROM user_teams " +
+            "JOIN roles USING (role_id) " +
+            "JOIN users USING (user_id) " +
+            "WHERE team_id = :teamId AND user_id = :userId")
+    ImmutableUserRole getTeamMemberByTeamAndUserId(@Bind("teamId") int teamId, @Bind("userId") int userId);
+
+    @SqlUpdate("INSERT INTO user_teams (team_id, user_id, role_id) VALUES (:teamId, :userId, :roleId)")
+    void addUserToTeam(@Bind("teamId") int teamId, @Bind("userId") int userId, @Bind("roleId") int roleId);
 }

@@ -51,7 +51,7 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final OkHttpClient httpClient = new OkHttpClient();
         final AnalyticsClient analyticsClient = new AnalyticsClient(httpClient, objectMapper);
 
-        final TeamsManager teamsManager = new TeamsManager(teamsDAO, analyticsClient);
+        final TeamsManager teamsManager = new TeamsManager(teamsDAO, usersDao, analyticsClient);
         final TasksManager tasksManager = new TasksManager(teamsManager, tasksDao, commentsDAO, analyticsClient);
         final ProjectsManager projectsManager = new ProjectsManager(projectsDAO, analyticsClient);
         final UsersManager usersManager = new UsersManager(usersDao, stagesDAO, analyticsClient, projectsManager, teamsManager);

@@ -3,6 +3,7 @@ package com.workflowstreamer.manager;
 import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.ImmutableNewTeam;
 import com.workflowstreamer.core.ImmutableTeam;
+import com.workflowstreamer.core.ImmutableUserRole;
 import com.workflowstreamer.dao.TeamsDAO;
 
 import java.util.Set;
@@ -32,5 +33,9 @@ public class TeamsManager {
         int teamId = teamsDAO.insertTeam(newTeam);
         addUserToTeam(newTeam.getUserId(), teamId);
         return teamsDAO.getTeamById(teamId);
+    }
+
+    public Set<ImmutableUserRole> getTeamMembers(int teamId) {
+        return teamsDAO.getTeamMembers(teamId);
     }
 }

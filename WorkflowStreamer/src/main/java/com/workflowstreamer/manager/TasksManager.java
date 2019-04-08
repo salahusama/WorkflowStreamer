@@ -5,6 +5,7 @@ import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.CommentsDAO;
 import com.workflowstreamer.dao.TasksDAO;
+import com.workflowstreamer.dao.UsersDAO;
 import org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException;
 
 import javax.ws.rs.core.Response;
@@ -14,12 +15,14 @@ import java.util.stream.Collectors;
 
 public class TasksManager {
     private final TasksDAO tasksDao;
+    private final UsersDAO usersDao;
     private final CommentsDAO commentsDAO;
     private final TeamsManager teamsManager;
     private final AnalyticsClient analyticsClient;
 
-    public TasksManager(TeamsManager teamsManager, TasksDAO tasksDao, CommentsDAO commentsDAO, AnalyticsClient analyticsClient) {
+    public TasksManager(TeamsManager teamsManager, TasksDAO tasksDao, UsersDAO usersDao, CommentsDAO commentsDAO, AnalyticsClient analyticsClient) {
         this.tasksDao = tasksDao;
+        this.usersDao = usersDao;
         this.commentsDAO = commentsDAO;
         this.teamsManager = teamsManager;
         this.analyticsClient = analyticsClient;
@@ -118,7 +121,10 @@ public class TasksManager {
     }
 
     public Response getTaskComments(int taskId) {
-        Set<ImmutableComment> comments = commentsDAO.getCommentsForTask(taskId);
+        Set<ImmutableComment> comments = commentsDAO.getCommentsForTask(taskId)
+                .stream()
+                .map(comment -> comment.withUsername(usersDao.getUserById(comment.getCreatorId()).getUsername()))
+                .collect(Collectors.toSet());
         return Response.ok(comments).build();
     }
 

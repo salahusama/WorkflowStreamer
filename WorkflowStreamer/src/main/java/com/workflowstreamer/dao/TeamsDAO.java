@@ -2,8 +2,10 @@ package com.workflowstreamer.dao;
 
 import com.workflowstreamer.core.ImmutableNewTeam;
 import com.workflowstreamer.core.ImmutableTeam;
+import com.workflowstreamer.core.ImmutableUserRole;
 import com.workflowstreamer.dao.binder.NewTeamBinder;
 import com.workflowstreamer.dao.mapper.TeamMapper;
+import com.workflowstreamer.dao.mapper.UserRoleMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
@@ -34,4 +36,11 @@ public interface TeamsDAO {
                "JOIN projects USING (project_id) " +
                "WHERE task_id = :taskId")
     int getTeamIdByTaskId(@Bind("taskId") int taskId);
+
+    @Mapper(UserRoleMapper.class)
+    @SqlQuery("SELECT user_id, username, email, title, description FROM user_teams " +
+              "JOIN roles USING (role_id) " +
+              "JOIN users USING (user_id) " +
+              "WHERE team_id = :teamId")
+    Set<ImmutableUserRole> getTeamMembers(@Bind("teamId") int teamId);
 }

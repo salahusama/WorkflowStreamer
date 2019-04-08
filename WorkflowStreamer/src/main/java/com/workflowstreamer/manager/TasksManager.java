@@ -34,30 +34,10 @@ public class TasksManager {
 
     public Set<ImmutableTask> getTasksCreatedByUser(int userId) {
         Set<ImmutableTask> userTasks = tasksDao.getTasksByUser(userId);
-        return userTasks.stream()
-                .map(task -> task.withIsRecommended(checkRecommendation(task)))
-                .collect(Collectors.toSet());
+        return RecommendationManager.addRecommendationToTasks(userTasks);
     }
 
     public Set<ImmutableTask> getTasksByUserTeams(int userId) {
-        Set<ImmutableTeam> userTeams = teamsManager.getUserTeams(userId);
-
-        // Each user must have be in at least 1 team (default team)
-        // This is a measure in case sth goes wrong
-        if (userTeams.size() == 0) {
-            return ImmutableSet.of();
-        }
-
-        List<Integer> teamIds = userTeams.stream().map(ImmutableTeam::getTeamId).collect(Collectors.toList());
-        Set<ImmutableTask> teamTasks = tasksDao.getTasksByTeamIds(teamIds);
-
-        return teamTasks.stream()
-                .map(task -> task.withIsRecommended(checkRecommendation(task)))
-                .collect(Collectors.toSet());
-    }
-
-    @Deprecated
-    public Set<ImmutableTask> getTasksByUserTeamsBeta(int userId) {
         Set<ImmutableTeam> userTeams = teamsManager.getUserTeams(userId);
 
         // Each user must have be in at least 1 team (default team)
@@ -73,8 +53,7 @@ public class TasksManager {
     }
 
     public ImmutableTask getTaskById(int taskId) {
-        ImmutableTask task = tasksDao.getTaskById(taskId);
-        return task.withIsRecommended(checkRecommendation(task));
+        return tasksDao.getTaskById(taskId);
     }
 
     public Response insertTask(ImmutableNewTask newTask) {
@@ -130,12 +109,8 @@ public class TasksManager {
 
     public Response addComment(ImmutableNewComment newComment) {
         int generatedId = commentsDAO.addComment(newComment);
-        ImmutableComment addedComment = commentsDAO.getCommentById(generatedId);
+        ImmutableComment addedComment = commentsDAO.getCommentById(generatedId).withUsername(usersDao.getUserById(newComment.getCreatorId()).getUsername());
         // TODO: Add analytics tracking
         return Response.ok(addedComment).build();
-    }
-
-    private boolean checkRecommendation(ImmutableTask task) {
-        return task.getTitle().contains("API");
     }
 }

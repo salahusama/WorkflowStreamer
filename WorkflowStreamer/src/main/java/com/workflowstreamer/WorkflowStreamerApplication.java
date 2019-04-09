@@ -49,7 +49,7 @@ public class WorkflowStreamerApplication extends Application<WorkflowStreamerCon
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
         final OkHttpClient httpClient = new OkHttpClient();
-        final AnalyticsClient analyticsClient = new AnalyticsClient(httpClient, objectMapper);
+        final AnalyticsClient analyticsClient = new AnalyticsClient(config.getAnalyticsDomain(), httpClient, objectMapper);
 
         final TeamsManager teamsManager = new TeamsManager(teamsDAO, usersDao, analyticsClient);
         final TasksManager tasksManager = new TasksManager(teamsManager, tasksDao, usersDao, commentsDAO, analyticsClient);

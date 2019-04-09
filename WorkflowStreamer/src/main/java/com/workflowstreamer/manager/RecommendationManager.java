@@ -20,6 +20,10 @@ public class RecommendationManager {
     private static final ImmutableSet LOW_STAGES = ImmutableSet.of("Ice Box", "Closed", "Done");
 
     public static Set<ImmutableTask> addRecommendationToTasks(Set<ImmutableTask> tasks) {
+        if (tasks.size() == 0) {
+            return tasks;
+        }
+
         // Get sorted scores
         List<Integer> scores = tasks.stream()
                 .map(RecommendationManager::getTaskScore)

@@ -1,6 +1,5 @@
 package com.workflowstreamer.manager;
 
-import com.google.common.collect.ImmutableList;
 import com.workflowstreamer.clients.AnalyticsClient;
 import com.workflowstreamer.core.*;
 import com.workflowstreamer.dao.StagesDAO;
@@ -11,7 +10,6 @@ import javax.ws.rs.core.Response;
 import java.util.Set;
 
 public class UsersManager {
-    private static final ImmutableList<String> DEFAULT_STAGES = ImmutableList.of("Back Log", "In Progress", "Done");
     private static final String DEFAULT_PROJECT_NAME = "Default";
     private static final String DEFAULT_PROJECT_DESCRIPTION = "This is the default project for you.";
     private static final String DEFAULT_TEAM_NAME = "Default Team";
@@ -66,18 +64,6 @@ public class UsersManager {
         return response.build();
     }
 
-    public Response addNewUserStage(ImmutableUserStage stage) {
-        Response.ResponseBuilder response;
-
-        try {
-            usersDao.insertUserStage(stage);
-            response = Response.ok();
-        } catch (UnableToExecuteStatementException e) {
-            response = Response.status(Response.Status.CONFLICT);
-        }
-        return response.build();
-    }
-
     private void addDefaults(int userId) {
         // Add default team
         ImmutableTeam defaultTeam = teamsManager.insertTeam(ImmutableNewTeam.builder()
@@ -95,24 +81,5 @@ public class UsersManager {
                 .description(DEFAULT_PROJECT_DESCRIPTION)
                 .build()
         );
-
-        // Add default stages
-        addDefaultStages(userId);
-    }
-
-    private void addDefaultStages(int userId) {
-        try {
-            int viewOrder = 1;
-            for (String stage : DEFAULT_STAGES) {
-                usersDao.insertUserStage(ImmutableUserStage.builder()
-                        .userId(userId)
-                        .stage(stage)
-                        .viewOrder(viewOrder++)
-                        .build()
-                );
-            }
-        } catch (UnableToExecuteStatementException e) {
-            e.printStackTrace();
-        }
     }
 }

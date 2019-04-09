@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class AnalyticsClient {
-    private static final String url = "http://localhost:5000/events/event";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     public interface Events {
         interface TaskInteraction {
@@ -34,12 +33,14 @@ public class AnalyticsClient {
         }
     }
 
+    private final String url;
     private final OkHttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    public AnalyticsClient(OkHttpClient httpClient, ObjectMapper objectMapper) {
+    public AnalyticsClient(String domain, OkHttpClient httpClient, ObjectMapper objectMapper) {
         this.httpClient = httpClient;
         this.objectMapper = objectMapper;
+        this.url = String.format("%s/events/event", domain);
     }
 
     public void fireEvent(ImmutableAnalyticsEvent event) {

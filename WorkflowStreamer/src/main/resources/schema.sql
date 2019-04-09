@@ -1,3 +1,6 @@
+CREATE DATABASE workflowstreamer;
+USE workflowstreamer;
+
 CREATE TABLE users (
 	user_id		INT AUTO_INCREMENT,
 	email		VARCHAR(100) UNIQUE,
@@ -29,14 +32,14 @@ CREATE TABLE user_teams (
 );
 
 CREATE TABLE projects (
-	project_id	INT AUTO_INCREMENT,
-	creator_id	INT,
+	project_id 	INT AUTO_INCREMENT,
+	creator_id 	INT,
 	team_id     INT,
-	name		VARCHAR(50),
-	description	LONGTEXT,
+	name 		VARCHAR(50),
+	description LONGTEXT,
 	PRIMARY KEY (project_id),
 	FOREIGN KEY (creator_id) REFERENCES users (user_id),
-	FOREIGN KEY (owned_by) REFERENCES teams (team_id)
+	FOREIGN KEY (creator_id) REFERENCES teams (team_id)
 );
 
 CREATE TABLE stages (

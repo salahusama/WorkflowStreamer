@@ -96,6 +96,6 @@ INSERT INTO stages VALUES
 ;
 
 INSERT INTO roles (title, description) VALUES
-    ('Manager', 1),
-    ('Contributor', 2)
+    ('Manager', 'Manages the team'),
+    ('Contributor', 'Contributes to the team')
 ;

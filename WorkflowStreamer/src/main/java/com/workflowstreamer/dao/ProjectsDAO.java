@@ -31,6 +31,6 @@ public interface ProjectsDAO {
     int insertProject(@Bind("creatorId") int creatorId, @Bind("name") String name, @Bind("desc") String description);
 
     @GetGeneratedKeys
-    @SqlUpdate("INSERT INTO projects (creator_id, team_id, name, description) VALUES (:creatorId, :teamId, :name, :desc)")
+    @SqlUpdate("INSERT INTO projects (creator_id, team_id, name, description) VALUES (:creatorId, :teamId, :name, :description)")
     int insertProject(@NewProjectBinder ImmutableNewProject newProject);
 }

@@ -39,7 +39,7 @@ CREATE TABLE projects (
 	description LONGTEXT,
 	PRIMARY KEY (project_id),
 	FOREIGN KEY (creator_id) REFERENCES users (user_id),
-	FOREIGN KEY (creator_id) REFERENCES teams (team_id)
+	FOREIGN KEY (team_id) REFERENCES teams (team_id)
 );
 
 CREATE TABLE stages (
@@ -75,3 +75,18 @@ CREATE TABLE task_comments (
     FOREIGN KEY (task_id) REFERENCES tasks (task_id),
     FOREIGN KEY (creator_id) REFERENCES users (user_id)
 );
+
+INSERT INTO stages VALUES
+    ('Ice Box', 1),
+    ('Back Log', 2),
+    ('Ready', 3),
+    ('In Progress', 4),
+    ('In Review', 5),
+    ('Done', 6),
+    ('Closed', 7)
+;
+
+INSERT INTO roles (title, description) VALUES
+    ('Manager', 1),
+    ('Contributor', 2)
+;

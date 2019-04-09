@@ -1,6 +1,15 @@
 CREATE DATABASE workflowstreamer;
 USE workflowstreamer;
 
+DROP TABLE task_comments;
+DROP TABLE task;
+DROP TABLE stages;
+DROP TABLE projects;
+DROP TABLE user_teams;
+DROP TABLE roles;
+DROP TABLE teams;
+DROP TABLE users;
+
 CREATE TABLE users (
 	user_id		INT AUTO_INCREMENT,
 	email		VARCHAR(100) UNIQUE,
